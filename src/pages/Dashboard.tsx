@@ -1,5 +1,6 @@
 import { CheckCircle, Clock, FolderGit, Plus, TrendingUp } from 'lucide-react';
 import { Card } from '../components/app-layout/Card';
+import ProjectList from '../components/app-layout/ProjectList';
 import CommonButton from '../components/ui/CommonButton';
 import { PageTitle } from '../components/ui/PageTitle';
 import colors from '../constants/colors';
@@ -75,6 +76,12 @@ const Dashboard = () => {
           <p className="text-sm text-gray-500 mb-6">
             Your ongoing projects and their progress
           </p>
+          <ProjectList
+            title="Active Projects"
+            projects={Projects}
+            layout="list"
+          />
+
           <div className="flex flex-col w-full gap-6">
             {Projects.map((project, index) => (
               <div
