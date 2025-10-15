@@ -81,6 +81,59 @@ const Dashboard = () => {
             projects={Projects}
             layout="list"
           />
+
+          <div className="flex flex-col w-full gap-6">
+            {Projects.map((project, index) => (
+              <div
+                key={index}
+                className="rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col gap-3 bg-white"
+              >
+                {/* Project Header with Team */}
+                <div className="flex justify-between items-center">
+                  <h3 className="font-medium text-gray-800">
+                    {project.project}
+                  </h3>
+                  <div className="flex -space-x-2 items-center">
+                    {project.teamMembers.slice(0, 3).map((member, idx) => (
+                      <div
+                        key={idx}
+                        className="rounded-full w-8 h-8 flex items-center justify-center text-white font-medium text-sm bg-gradient-to-br from-purple-500 to-pink-500 border-2 border-white"
+                        title={member}
+                      >
+                        {member[0]}
+                      </div>
+                    ))}
+                    {project.teamMembers.length > 3 && (
+                      <div className="rounded-full w-8 h-8 flex items-center justify-center text-white font-medium text-sm bg-gray-400 border-2 border-white">
+                        +{project.teamMembers.length - 3}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Project Description */}
+                <p className="text-sm text-gray-500">{project.desc}</p>
+
+                {/* Tasks info */}
+                <div className="flex justify-between items-center text-sm text-gray-600">
+                  <div className="flex gap-1 items-center">
+                    <span>{project.completedTask}</span>
+                    <span>/</span>
+                    <span>{project.totalAssignedTask}</span>
+                  </div>
+                  <span>{project.completedPercentage}%</span>
+                </div>
+
+                {/* Progress Bar */}
+                <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full transition-all duration-500"
+                    style={{ width: `${project.completedPercentage}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Sidebar / Summary Section */}

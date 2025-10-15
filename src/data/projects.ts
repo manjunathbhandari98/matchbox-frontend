@@ -1,3 +1,4 @@
+
 import type { Project } from "../types";
 
 export const Projects:Project[] = [
@@ -69,6 +70,6 @@ export const Projects:Project[] = [
     priority: "low",
     teamMembers: ["Olivia", "Peter"],
     completedPercentage: 100,
-    lastUpdated: "2025-09-30T17:00:00Z",
+    lastUpdated: "2025-09-30T17:00:00Z"
   },
 ];
