@@ -79,7 +79,7 @@ const ProjectList: React.FC<ProjectListProps> = ({
               <div
                 className={`absolute -top-3 right-4 px-3 py-1 text-xs font-medium border rounded-full shadow-sm ${style.badge} ${style.text}`}
               >
-                {project.priority} Priority
+                {project.priority.toUpperCase()}
               </div>
 
               {/* Header */}

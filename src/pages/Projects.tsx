@@ -1,122 +1,137 @@
-import { ArrowRight } from 'lucide-react';
-import React from 'react';
-import type { Project } from '../types';
+import { Funnel, Grid, List, Plus, Search } from 'lucide-react';
+import { useState } from 'react';
+import ProjectList from '../components/app-layout/ProjectList';
+import CommonButton from '../components/ui/CommonButton';
+import { PageTitle } from '../components/ui/PageTitle';
+import colors from '../constants/colors';
+import { Projects as mockProjects } from '../data/projects';
 
-interface ProjectListProps {
-  projects: Project[];
-  title?: string;
-  className?: string;
-  layout?: 'list' | 'grid';
-}
+export const Projects = () => {
+  const [activeTab, setActiveTab] = useState('In Progress');
+  const [gridView, setGridView] = useState(true);
 
-const priorityColors: Record<string, string> = {
-  High: 'bg-red-100 text-red-600 border-red-200',
-  Medium: 'bg-yellow-100 text-yellow-700 border-yellow-200',
-  Low: 'bg-green-100 text-green-600 border-green-200',
-  Critical: 'bg-purple-100 text-purple-600 border-purple-200',
-};
+  const inProgressProjects = mockProjects.filter(
+    (project) => project.status == 'in-progress'
+  );
 
-const ProjectList: React.FC<ProjectListProps> = ({
-  projects,
-  title,
-  className,
-  layout = 'list',
-}) => {
+  const completedProjects = mockProjects.filter(
+    (project) => project.status === 'completed'
+  );
+  const pendingProjects = mockProjects.filter(
+    (project) => project.status === 'pending'
+  );
+  const upcommingProjects = mockProjects.filter(
+    (project) => project.status === 'upcoming'
+  );
+
+  const tabs = ['In Progress', 'Pending', 'Completed', 'Upcomming'];
   return (
-    <div className={`w-full ${className || ''}`}>
-      {title && (
-        <h2 className="text-lg font-semibold text-gray-800 border-b border-gray-100 pb-2 mb-4">
-          {title}
-        </h2>
-      )}
+    <div className="p-2">
+      <div className="flex justify-between items-center">
+        <PageTitle title="Projects" desc="Manage and Track All your projects" />
+        <CommonButton
+          text="New Project"
+          icon={<Plus />}
+          borderColor={colors.primaryDark}
+          bgColor="blue"
+          size="md"
+          rounded="md"
+        />
+      </div>
+      <div className="my-6 w-full flex items-center gap-3">
+        {/* Search Bar */}
+        <div className="flex items-center bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 w-full shadow-sm hover:shadow-md transition-all duration-200">
+          <Search size={20} className="text-gray-500" />
+          <input
+            type="text"
+            className="w-full px-3 py-1 bg-transparent border-0 outline-0 text-gray-700 placeholder-gray-400"
+            placeholder="Search projects..."
+          />
+        </div>
 
-      {/* Grid or List Layout */}
-      <div
-        className={
-          layout === 'grid'
-            ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
-            : 'flex flex-col gap-6'
-        }
-      >
-        {projects.map((project, index) => (
-          <div
-            key={index}
-            className="relative rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col gap-3 bg-white"
-          >
-            {/* Priority Indicator */}
-            <div
-              className={`absolute -top-2 left-4 px-3 py-1 text-xs font-medium border rounded-full shadow-sm ${
-                priorityColors[project.priority] ||
-                'bg-gray-100 text-gray-600 border-gray-200'
+        {/* Filter Button */}
+        <button className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-gray-700 font-medium shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200">
+          <Funnel size={18} className="text-gray-500" />
+          <span>Filter</span>
+        </button>
+      </div>
+
+      {/* Tabs */}
+      <div className="w-full mt-6">
+        {/* Tabs Header */}
+        <div className="flex gap-2 items-center w-full">
+          <div className="flex justify-start border-b border-gray-200 w-full">
+            {tabs.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`relative px-5 py-2.5 text-sm font-medium transition-all duration-300 
+              ${
+                activeTab === tab
+                  ? 'text-purple-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+              >
+                {tab}
+                {activeTab === tab && (
+                  <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-purple-600 rounded-t-md transition-all duration-300"></span>
+                )}
+              </button>
+            ))}
+          </div>
+          <div className="flex items-center gap-3 bg-gray-100 p-1 rounded-xl shadow-sm">
+            <button
+              onClick={() => setGridView(true)}
+              className={`p-2 rounded-lg transition-all duration-300 ${
+                gridView
+                  ? 'bg-blue-500 text-white shadow-md'
+                  : 'text-gray-600 hover:bg-gray-200'
               }`}
             >
-              {project.priority} Priority
-            </div>
+              <Grid size={18} />
+            </button>
 
-            {/* Project Header */}
-            <div className="flex justify-between items-center mt-4">
-              <h3 className="font-medium text-gray-800">
-                {project.projectName}
-              </h3>
-              <div className="flex -space-x-2 items-center">
-                {project.teamMembers
-                  .slice(0, 3)
-                  .map((member: string, idx: number) => (
-                    <div
-                      key={idx}
-                      className="rounded-full w-8 h-8 flex items-center justify-center text-white font-medium text-sm bg-gradient-to-br from-purple-500 to-pink-500 border-2 border-white"
-                      title={member}
-                    >
-                      {member[0]}
-                    </div>
-                  ))}
-                {project.teamMembers.length > 3 && (
-                  <div className="rounded-full w-8 h-8 flex items-center justify-center text-white font-medium text-sm bg-gray-400 border-2 border-white">
-                    +{project.teamMembers.length - 3}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Description */}
-            <p className="text-sm text-gray-500">{project.description}</p>
-
-            {/* Task Info */}
-            <div className="flex justify-between items-center text-sm text-gray-600">
-              <div className="flex gap-1 items-center">
-                <span>{project.completedTasks}</span>
-                <span>/</span>
-                <span>{project.totalAssignedTasks}</span>
-              </div>
-              <span>{project.completedPercentage}%</span>
-            </div>
-
-            {/* Progress Bar */}
-            <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full transition-all duration-500"
-                style={{ width: `${project.completedPercentage}%` }}
-              />
-            </div>
-
-            {/* View Project Button */}
-            <div
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 border border-gray-400 
-             text-center justify-center font-medium rounded-xl shadow-md cursor-pointer 
-             transition-all duration-300 text-gray-800
-             hover:shadow-lg active:scale-95 group"
+            <button
+              onClick={() => setGridView(false)}
+              className={`p-2 rounded-lg transition-all duration-300 ${
+                !gridView
+                  ? 'bg-blue-500 text-white shadow-md'
+                  : 'text-gray-600 hover:bg-gray-200'
+              }`}
             >
-              <h2 className="text-sm sm:text-md tracking-wide">View Project</h2>
-              <ArrowRight
-                className="transition-transform duration-300 group-hover:translate-x-1"
-                size={18}
-              />
-            </div>
+              <List size={18} />
+            </button>
           </div>
-        ))}
+        </div>
+
+        {/* Tab Content */}
+        <div className="mt-5 bg-white border border-gray-100 rounded-2xl p-5 shadow-sm transition-all duration-300">
+          {activeTab === 'In Progress' && (
+            <ProjectList
+              projects={inProgressProjects}
+              layout={gridView ? 'grid' : 'list'}
+            />
+          )}
+          {activeTab === 'Pending' && (
+            <ProjectList
+              projects={pendingProjects}
+              layout={gridView ? 'grid' : 'list'}
+            />
+          )}
+          {activeTab === 'Completed' && (
+            <ProjectList
+              projects={completedProjects}
+              layout={gridView ? 'grid' : 'list'}
+            />
+          )}
+          {activeTab === 'Upcomming' && (
+            <ProjectList
+              projects={upcommingProjects}
+              layout={gridView ? 'grid' : 'list'}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
 };
-
-export default ProjectList;
