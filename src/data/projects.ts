@@ -1,0 +1,42 @@
+export const Projects = [
+  {
+    project: "Website Redesign",
+    desc: "Revamp the landing page and update UI/UX across the site",
+    totalAssignedTask: 24,
+    completedTask: 18,
+    teamMembers: ["Alice", "Bob", "Charlie", "Diana"],
+    completedPercentage: 75,
+  },
+  {
+    project: "Mobile App Development",
+    desc: "Build Android and iOS versions of the new app",
+    totalAssignedTask: 40,
+    completedTask: 30,
+    teamMembers: ["Ethan", "Fiona", "George"],
+    completedPercentage: 75,
+  },
+  {
+    project: "Marketing Campaign",
+    desc: "Launch the Q4 digital marketing campaign",
+    totalAssignedTask: 15,
+    completedTask: 10,
+    teamMembers: ["Hannah", "Ishaan", "Julia"],
+    completedPercentage: 66,
+  },
+  {
+    project: "Customer Support Portal",
+    desc: "Implement a ticketing system and FAQ portal",
+    totalAssignedTask: 20,
+    completedTask: 12,
+    teamMembers: ["Kevin", "Laura", "Mike", "Nina"],
+    completedPercentage: 60,
+  },
+  {
+    project: "Internal Tools Upgrade",
+    desc: "Upgrade internal analytics and reporting tools",
+    totalAssignedTask: 10,
+    completedTask: 8,
+    teamMembers: ["Olivia", "Peter"],
+    completedPercentage: 80,
+  },
+];
