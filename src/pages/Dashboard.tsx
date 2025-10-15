@@ -91,7 +91,7 @@ const Dashboard = () => {
                 {/* Project Header with Team */}
                 <div className="flex justify-between items-center">
                   <h3 className="font-medium text-gray-800">
-                    {project.project}
+                    {project.projectName}
                   </h3>
                   <div className="flex -space-x-2 items-center">
                     {project.teamMembers.slice(0, 3).map((member, idx) => (
@@ -112,14 +112,14 @@ const Dashboard = () => {
                 </div>
 
                 {/* Project Description */}
-                <p className="text-sm text-gray-500">{project.desc}</p>
+                <p className="text-sm text-gray-500">{project.description}</p>
 
                 {/* Tasks info */}
                 <div className="flex justify-between items-center text-sm text-gray-600">
                   <div className="flex gap-1 items-center">
-                    <span>{project.completedTask}</span>
+                    <span>{project.completedTasks}</span>
                     <span>/</span>
-                    <span>{project.totalAssignedTask}</span>
+                    <span>{project.totalAssignedTasks}</span>
                   </div>
                   <span>{project.completedPercentage}%</span>
                 </div>
