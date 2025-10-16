@@ -117,9 +117,12 @@ export const AppLayout = () => {
             </div>
 
             {/* Profile Avatar */}
-            <div className="w-8 h-8 bg-blue-600 text-white flex items-center justify-center rounded-full font-medium cursor-pointer">
+            <Link
+              to={'/settings'}
+              className="w-8 h-8 bg-blue-600 text-white flex items-center justify-center rounded-full font-medium cursor-pointer"
+            >
               K
-            </div>
+            </Link>
           </div>
         </header>
 

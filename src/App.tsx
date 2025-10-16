@@ -4,6 +4,7 @@ import { AppLayout } from './pages/AppLayout';
 import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
+import { ProfileSettings } from './pages/ProfileSettings';
 import { Projects } from './pages/Projects';
 import { Tasks } from './pages/Tasks';
 import { Teams } from './pages/Teams';
@@ -46,6 +47,7 @@ function App() {
         <Route path="tasks" element={<Tasks />} />
         <Route path="analytics" element={<Analytics />} />
         <Route path="teams" element={<Teams />} />
+        <Route path="settings" element={<ProfileSettings />} />
       </Route>
     </Routes>
   );
