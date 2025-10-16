@@ -9,12 +9,28 @@ import {
   Sun,
   Users,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import type { RootState } from '../app/store';
 import colors from '../constants/colors';
+import { setTheme } from '../redux/themeSlice';
 
 export const AppLayout = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
+  const currentTheme = useSelector((state: RootState) => state.theme.current);
+
+  useEffect(() => {
+    const root = document.documentElement; // <html>
+    if (currentTheme === 'dark') {
+      root.setAttribute('class', currentTheme);
+    } else {
+      root.removeAttribute('data-theme');
+      root.setAttribute('class', currentTheme);
+    }
+  }, [currentTheme]);
+
   const sidebarOptions = [
     {
       option: 'Dashboard',
@@ -28,18 +44,14 @@ export const AppLayout = () => {
   ];
 
   const themeModes = [
-    { mode: 'Light', icon: <Sun size={16} /> },
-    { mode: 'Dark', icon: <Moon size={16} /> },
+    { mode: 'Light', value: 'light', icon: <Sun size={16} /> },
+    { mode: 'Dark', value: 'dark', icon: <Moon size={16} /> },
   ];
 
-  const [activeTheme, setActiveTheme] = useState(0); // 0: light, 1: dark
-
-  const toggleTheme = () => setActiveTheme(activeTheme === 0 ? 1 : 0);
-
   return (
-    <div className="flex h-screen overflow-hidden font-sans bg-gray-50">
+    <div className="flex h-screen overflow-hidden font-sans bg-gray-50 dark:bg-zinc-900">
       {/* Sidebar */}
-      <aside className="flex flex-col w-64 bg-white shadow-sm p-4">
+      <aside className="flex flex-col w-64 bg-white dark:bg-zinc-800 shadow-sm p-4 border-r border-gray-200 dark:border-zinc-700">
         {/* Logo */}
         <Link
           to="/dashboard"
@@ -51,7 +63,7 @@ export const AppLayout = () => {
             className="w-7 h-7 rounded-xl"
           />
           <h2 className="text-xl font-semibold tracking-tight source-serif">
-            <span>Match</span>
+            <span className="dark:text-white">Match</span>
             <span style={{ color: colors.primary }}>Box</span>
           </h2>
         </Link>
@@ -66,8 +78,8 @@ export const AppLayout = () => {
                 to={option.link}
                 className={`flex items-center gap-3 p-3 rounded-lg font-medium transition-colors duration-200 ${
                   isActive
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'
+                    ? 'bg-blue-600 text-white dark:bg-blue-500'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-zinc-700 hover:text-blue-600 dark:hover:text-blue-400'
                 }`}
               >
                 {option.icon}
@@ -81,29 +93,32 @@ export const AppLayout = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Header */}
-        <header className="flex justify-between items-center p-4 bg-white shadow-sm">
+        <header className="flex justify-between items-center p-4 bg-primary dark:bg-primary-dark shadow-sm border-b border-gray-200 dark:border-zinc-700">
           {/* Search Bar */}
-          <div className="flex items-center bg-gray-100 rounded-xl px-3 py-2 gap-2 w-80">
+          <div className="flex items-center bg-gray-100 dark:bg-zinc-700 rounded-xl px-3 py-2 gap-2 w-80">
             <input
               type="text"
               placeholder="Search..."
-              className="flex-1 bg-transparent outline-none border-none text-sm"
+              className="flex-1 bg-transparent outline-none border-none text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
             />
-            <Search size={20} className="text-gray-500 cursor-pointer" />
+            <Search
+              size={20}
+              className="text-gray-500 dark:text-gray-400 cursor-pointer"
+            />
           </div>
 
           {/* Profile / Theme / Notifications */}
           <div className="flex items-center gap-4">
             {/* Theme Toggle */}
-            <div className="flex bg-gray-200 rounded-full p-1 gap-2">
+            <div className="flex bg-gray-200 dark:bg-zinc-700 rounded-full p-1 gap-2">
               {themeModes.map((mode, index) => (
                 <div
                   key={index}
-                  onClick={toggleTheme}
+                  onClick={() => dispatch(setTheme(mode.value))}
                   className={`p-2 rounded-full cursor-pointer flex items-center justify-center transition-colors duration-200 ${
-                    activeTheme === index
-                      ? 'bg-gray-900 text-white'
-                      : 'text-gray-600'
+                    currentTheme === mode.value
+                      ? 'bg-gray-900 dark:bg-blue-600 text-white'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-zinc-600'
                   }`}
                 >
                   {mode.icon}
@@ -112,14 +127,14 @@ export const AppLayout = () => {
             </div>
 
             {/* Notifications */}
-            <div className="p-2 rounded-full hover:bg-gray-200 cursor-pointer">
+            <div className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-zinc-700 cursor-pointer text-gray-700 dark:text-gray-300">
               <Bell size={20} />
             </div>
 
             {/* Profile Avatar */}
             <Link
               to={'/settings'}
-              className="w-8 h-8 bg-blue-600 text-white flex items-center justify-center rounded-full font-medium cursor-pointer"
+              className="w-8 h-8 bg-blue-600 dark:bg-blue-500 text-white flex items-center justify-center rounded-full font-medium cursor-pointer hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
             >
               K
             </Link>
@@ -127,7 +142,7 @@ export const AppLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-6 bg-gray-50">
+        <main className="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-zinc-900">
           <Outlet /> {/* Render nested routes here */}
         </main>
       </div>

@@ -66,7 +66,7 @@ export const Tasks = () => {
       {/* Search + Filter Bar */}
       <div className="my-6 w-full flex items-center gap-3">
         {/* Search Bar */}
-        <div className="flex items-center bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 w-full shadow-sm hover:shadow-md transition-all duration-200">
+        <div className="flex items-center bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 w-full shadow-sm hover:shadow-md transition-all duration-200">
           <Search size={20} className="text-gray-500" />
           <input
             type="text"
@@ -77,7 +77,7 @@ export const Tasks = () => {
         </div>
 
         {/* Filter Button */}
-        <button className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-gray-700 font-medium shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200">
+        <button className="flex items-center gap-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2.5 text-gray-700 dark:text-gray-200 font-medium shadow-sm hover:shadow-md hover:bg-gray-50 dark:hover:bg-zinc-900 transition-all duration-200">
           <Funnel size={18} className="text-gray-500" />
           <span>Filter</span>
         </button>
@@ -92,7 +92,7 @@ export const Tasks = () => {
             className={`px-3 py-1 rounded-full border ${
               activeStatus === status
                 ? 'bg-blue-600 text-white border-blue-600'
-                : 'bg-gray-100 text-gray-700 border-gray-300'
+                : 'bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-100 border-gray-300 dark:border-gray-700'
             } text-sm font-medium transition-all duration-200`}
           >
             {status.replace('-', ' ').toUpperCase()}
@@ -105,13 +105,17 @@ export const Tasks = () => {
         {filteredTasks.map((task: Task) => (
           <div
             key={task.id}
-            className="rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col gap-3 bg-white"
+            className="rounded-xl p-4 border border-gray-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col gap-3 bg-white dark:bg-zinc-800"
           >
             <div className="flex justify-between items-start">
               <div className="flex flex-col gap-1">
-                <h3 className="font-medium text-gray-800">{task.taskName}</h3>
-                <p className="text-sm text-gray-500">{task.description}</p>
-                <p className="text-xs text-gray-400">
+                <h3 className="font-medium text-gray-800 dark:text-gray-200">
+                  {task.taskName}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-200">
+                  {task.description}
+                </p>
+                <p className="text-xs text-gray-400 dark:text-gray-200">
                   Project: {task.projectId} | Due:{' '}
                   {new Date(task.dueDate).toLocaleDateString()}
                 </p>

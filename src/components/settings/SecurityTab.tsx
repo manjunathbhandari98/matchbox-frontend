@@ -11,41 +11,44 @@ export const SecurityTab = () => {
   ];
 
   return (
-    <div className="p-6 bg-gray-50 min-h-[calc(100vh-64px)] rounded-xl space-y-8">
+    <div className="p-6 bg-white dark:bg-zinc-800 min-h-[calc(100vh-64px)] rounded-xl space-y-8">
       <PageTitle
         title="Security Settings"
         desc="Manage your account security"
       />
 
       {/* Change Password Form */}
-      <form className="space-y-4 bg-white p-6 rounded-xl shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">
+      <form className="space-y-4 bg-white dark:bg-zinc-800 p-6 rounded-xl shadow-sm">
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
           Change Password
         </h2>
 
         <div className="flex flex-col gap-2">
           <label
             htmlFor="currentPassword"
-            className="text-gray-700 font-medium"
+            className="text-gray-700 dark:text-gray-200 font-medium"
           >
             Current Password
           </label>
           <input
             type="password"
             id="currentPassword"
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            className="p-3 border border-gray-300 dark:border-zinc-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             placeholder="Enter current password"
           />
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="newPassword" className="text-gray-700 font-medium">
+          <label
+            htmlFor="newPassword"
+            className="text-gray-700 dark:text-gray-200 font-medium"
+          >
             New Password
           </label>
           <input
             type="password"
             id="newPassword"
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            className="p-3 border border-gray-300 dark:border-zinc-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             placeholder="Enter new password"
           />
         </div>
@@ -53,14 +56,14 @@ export const SecurityTab = () => {
         <div className="flex flex-col gap-2">
           <label
             htmlFor="confirmPassword"
-            className="text-gray-700 font-medium"
+            className="text-gray-700 dark:text-gray-200 font-medium"
           >
             Confirm Password
           </label>
           <input
             type="password"
             id="confirmPassword"
-            className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            className="p-3 border border-gray-300 dark:border-zinc-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             placeholder="Confirm new password"
           />
         </div>
@@ -86,11 +89,15 @@ export const SecurityTab = () => {
 
       {/* Active Sessions */}
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-800">Active Sessions</h2>
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+          Active Sessions
+        </h2>
 
-        <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition">
+        <div className="flex items-center justify-between p-4 bg-white dark:bg-zinc-900/60 rounded-xl shadow-sm hover:shadow-md transition">
           <div className="flex flex-col">
-            <h3 className="font-medium text-gray-900">Current Session</h3>
+            <h3 className="font-medium text-gray-900 dark:text-gray-200">
+              Current Session
+            </h3>
             <p className="text-gray-500 text-sm">Chrome on MacOS</p>
           </div>
           <button className="text-red-500 font-semibold hover:text-red-600 transition">
@@ -98,9 +105,11 @@ export const SecurityTab = () => {
           </button>
         </div>
 
-        <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition">
+        <div className="flex items-center justify-between p-4 bg-white dark:bg-zinc-900/60 rounded-xl shadow-sm hover:shadow-md transition">
           <div className="flex flex-col">
-            <h3 className="font-medium text-gray-900">Last Session</h3>
+            <h3 className="font-medium text-gray-900 dark:text-gray-200">
+              Last Session
+            </h3>
             <p className="text-gray-500 text-sm">Firefox on Windows</p>
           </div>
           <button className="text-red-500 font-semibold hover:text-red-600 transition">

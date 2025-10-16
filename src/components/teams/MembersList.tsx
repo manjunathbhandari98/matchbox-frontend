@@ -36,25 +36,25 @@ export const MembersList = ({ teams }: TeamProps) => {
   return (
     <div className="flex flex-col gap-5">
       {/* Search Bar */}
-      <div className="flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-xl px-3 py-2 w-full max-w-md">
-        <Search size={18} className="text-gray-500" />
+      <div className="flex items-center gap-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 shadow-sm rounded-xl px-3 py-2 w-full max-w-md">
+        <Search size={18} className="text-gray-500 dark:text-gray-200" />
         <input
           type="text"
           placeholder="Search members..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full outline-none text-gray-700 text-sm bg-transparent"
+          className="w-full outline-none text-gray-700 dark:text-gray-200 text-sm bg-transparent"
         />
       </div>
 
       {/* Members List */}
-      <div className="p-5 rounded-2xl border border-gray-100 bg-white shadow-md hover:shadow-lg transition-all duration-300">
+      <div className="p-5 rounded-2xl border border-gray-100 dark:border-zinc-700 bg-white dark:bg-zinc-800 shadow-md hover:shadow-lg transition-all duration-300">
         <PageTitle
           title="Team Members"
           desc="Manage all team members and their roles"
         />
 
-        <div className="flex flex-col divide-y divide-gray-100 mt-4">
+        <div className="flex flex-col divide-y divide-gray-100 dark:divide-zinc-700 mt-4">
           {filteredMembers.map((member: Member, idx) => (
             <div
               key={idx}
@@ -64,8 +64,12 @@ export const MembersList = ({ teams }: TeamProps) => {
               <div className="flex items-center gap-4">
                 <Avatar name={member.name} size={10} />
                 <div className="flex flex-col">
-                  <h2 className="font-semibold text-gray-800">{member.name}</h2>
-                  <p className="text-sm text-gray-500">{member.email}</p>
+                  <h2 className="font-semibold text-gray-800 dark:text-gray-200">
+                    {member.name}
+                  </h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    {member.email}
+                  </p>
                 </div>
               </div>
 
@@ -80,14 +84,15 @@ export const MembersList = ({ teams }: TeamProps) => {
                 <div className="relative">
                   <MoreVertical
                     size={20}
-                    className="cursor-pointer text-gray-600 hover:text-gray-900"
+                    className="cursor-pointer text-gray-600 dark:text-gray-200
+                     hover:text-gray-900 dark:hover:text-gray-100"
                     onClick={() => toggleMenu(idx)}
                   />
 
                   {/* Dropdown menu */}
                   {openMenu === idx && (
-                    <div className="absolute right-0 top-6 w-50 py-2 bg-white border border-gray-200 rounded-xl shadow-lg z-20 animate-fadeIn">
-                      <ul className="flex flex-col text-sm text-gray-900 font-medium">
+                    <div className="absolute right-0 top-6 w-50 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-lg z-20 animate-fadeIn">
+                      <ul className="flex flex-col text-sm text-gray-900 dark:text-gray-200 font-medium">
                         <li
                           className="flex items-center rounded-lg mx-1 gap-2 px-3 py-2 hover:bg-blue-400 hover:text-white cursor-pointer"
                           onClick={() => {

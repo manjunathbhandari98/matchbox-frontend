@@ -15,7 +15,7 @@ export const Teams = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <div className="p-5 flex flex-col gap-6 bg-gray-50 min-h-screen">
+    <div className="p-5 flex flex-col gap-6 bg-gray-50 dark:bg-zinc-900 min-h-screen">
       {/* Header */}
       <div className="flex justify-between items-center w-full">
         <PageTitle title="Teams" desc="Manage your teams and team members" />
@@ -30,14 +30,14 @@ export const Teams = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex py-1.5 px-2 gap-4 mr-auto bg-gray-200 rounded-lg">
+      <div className="flex py-1.5 px-2 gap-4 mr-auto bg-gray-200 dark:bg-zinc-700 rounded-lg">
         {tabs.map((tab, idx) => (
           <div
             key={idx}
             className={`flex gap-2 items-center cursor-pointer px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
               activeTab === idx
-                ? 'bg-gray-900 text-white shadow-sm'
-                : 'text-gray-700 hover:bg-gray-300'
+                ? 'bg-gray-900 dark:bg-zinc-900 text-white shadow-sm'
+                : 'text-gray-700 dark:text-gray-200 dark:hover:bg-zinc-800 hover:bg-gray-300'
             }`}
             onClick={() => setActiveTab(idx)}
           >

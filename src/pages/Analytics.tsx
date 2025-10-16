@@ -27,7 +27,7 @@ export const Analytics = () => {
   ];
 
   return (
-    <div className="p-4 flex flex-col gap-6 bg-blue-50 min-h-screen">
+    <div className="p-4 flex flex-col gap-6 bg-blue-50 dark:bg-zinc-900 min-h-screen">
       {/* Page Header */}
       <div className="flex justify-between items-center w-full">
         <PageTitle
@@ -53,7 +53,7 @@ export const Analytics = () => {
       {/* Team Performance & Project Progress */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Team Performance */}
-        <div className="bg-white rounded-xl p-4 shadow-sm">
+        <div className="bg-white dark:bg-zinc-800 rounded-xl p-4 shadow-sm">
           <PageTitle
             title="Team Performance"
             desc="Individual Member Productivity"
@@ -65,7 +65,7 @@ export const Analytics = () => {
                   <div className="flex gap-3 items-center">
                     <Avatar name={member.name} size={8} />
                     <div className="flex flex-col">
-                      <h3 className="font-semibold text-gray-800">
+                      <h3 className="font-semibold text-gray-800 dark:text-gray-200">
                         {member.name}
                       </h3>
                       <p className="text-gray-500 text-sm">
@@ -74,7 +74,7 @@ export const Analytics = () => {
                     </div>
                   </div>
                   <div className="flex flex-col gap-1 text-center">
-                    <h2 className="font-semibold text-gray-800">
+                    <h2 className="font-semibold text-gray-800 dark:text-gray-200">
                       {member.efficiency}%
                     </h2>
                     <p className="text-gray-500 text-sm">Efficiency</p>
@@ -92,7 +92,7 @@ export const Analytics = () => {
         </div>
 
         {/* Project Progress */}
-        <div className="bg-white rounded-xl p-4 shadow-sm">
+        <div className="bg-white dark:bg-zinc-800 rounded-xl p-4 shadow-sm">
           <PageTitle
             title="Project Progress"
             desc="Completion & On-time Delivery"
@@ -101,8 +101,10 @@ export const Analytics = () => {
             {projectStats.map((project, idx) => (
               <div key={idx}>
                 <div className="flex justify-between items-center mb-1">
-                  <h3 className="font-medium text-gray-800">{project.name}</h3>
-                  <span className="text-gray-500 text-sm">
+                  <h3 className="font-medium text-gray-800 dark:text-gray-200">
+                    {project.name}
+                  </h3>
+                  <span className="text-gray-500 dark:text-gray-300 text-sm">
                     {project.completion}% Complete
                   </span>
                 </div>
@@ -125,22 +127,26 @@ export const Analytics = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* This Week Performace */}
-        <div className="rounded-xl p-5 bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
+        <div className="rounded-xl p-5 bg-white dark:bg-zinc-800 shadow-md hover:shadow-lg transition-shadow duration-300">
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
             <TrendingUp className="text-blue-500 w-6 h-6" />
-            <h2 className="font-bold text-2xl text-gray-800">This Week</h2>
+            <h2 className="font-bold text-2xl text-gray-800 dark:text-gray-200">
+              This Week
+            </h2>
           </div>
 
           {/* Task Stats */}
-          <div className="flex flex-col divide-y divide-gray-200">
+          <div className="flex flex-col divide-y divide-gray-200 dark:divide-gray-500">
             {taskStats.map((task, idx) => (
               <div
                 key={idx}
                 className="flex justify-between items-center py-3 first:pt-0 last:pb-0"
               >
-                <span className="text-gray-600 font-medium">{task.label}</span>
-                <span className="text-gray-900 font-bold text-xl">
+                <span className="text-gray-600 dark:text-gray-200 font-medium">
+                  {task.label}
+                </span>
+                <span className="text-gray-900 dark:text-gray-300 font-bold text-xl">
                   {task.value}
                 </span>
               </div>
@@ -149,24 +155,30 @@ export const Analytics = () => {
         </div>
 
         {/* Top Performer */}
-        <div className="rounded-xl p-5 bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
+        <div className="rounded-xl p-5 bg-white dark:bg-zinc-800 shadow-md hover:shadow-lg transition-shadow duration-300">
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
             <Award className="text-blue-500 w-6 h-6" />
-            <h2 className="font-bold text-2xl text-gray-800">Top Performer</h2>
+            <h2 className="font-bold text-2xl text-gray-800 dark:text-gray-200">
+              Top Performer
+            </h2>
           </div>
 
           {/* Performer Info */}
           <div className="flex items-center gap-4 mb-2">
-            <Avatar name="John Doe" size={20} />
+            <Avatar name="John Doe" className="w-14 h-14" />
             <div className="flex flex-col">
-              <h3 className="font-semibold text-gray-800">John Doe</h3>
-              <span className="text-gray-600 text-sm">88% efficiency</span>
+              <h3 className="font-semibold text-gray-800 dark:text-gray-200">
+                John Doe
+              </h3>
+              <span className="text-gray-600 dark:text-gray-300 text-sm">
+                88% efficiency
+              </span>
             </div>
           </div>
 
           {/* Task Info */}
-          <p className="text-gray-500 text-xs mb-3 mt-7">
+          <p className="text-gray-500 dark:text-gray-300 text-xs mb-3 mt-7">
             14 tasks completed this week
           </p>
 

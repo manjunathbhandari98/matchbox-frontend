@@ -31,7 +31,7 @@ export const NotificationsTab = () => {
   ];
 
   return (
-    <div className="p-4 space-y-6 bg-gray-50 rounded-xl">
+    <div className="p-4 space-y-6 bg-white dark:bg-zinc-800 rounded-xl">
       <PageTitle
         title="Notifications Preference"
         desc="Manage how you receive notifications"

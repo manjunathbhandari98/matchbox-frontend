@@ -37,27 +37,31 @@ export const ProfileTab = () => {
           <Avatar name="Krishna Murthy" size={38} />
         </div>
         <button
-          className="px-4 py-2.5 border border-gray-300 rounded-xl text-sm font-medium 
-                     text-gray-700 hover:border-blue-400 hover:text-blue-600 
+          className="px-4 py-2.5 border border-gray-300 dark:border-zinc-600 rounded-xl text-sm font-medium 
+                     text-gray-700 dark:text-gray-200 cursor-pointer hover:border-blue-400 hover:text-blue-600 
                      transition-all duration-200"
         >
           Change Profile
         </button>
       </div>
 
-      <div className="my-6 border-t border-gray-200"></div>
+      <div className="my-6 border-t border-gray-200 dark:border-zinc-700"></div>
 
       {/* Profile form */}
       <form className="flex flex-col gap-5">
         {/* Full Name */}
         <div>
-          <label htmlFor="fullName" className="font-medium text-gray-700">
+          <label
+            htmlFor="fullName"
+            className="font-medium text-gray-700 dark:text-gray-200"
+          >
             Full Name
           </label>
           <input
             type="text"
             id="fullName"
-            className="mt-2 w-full p-3 rounded-xl border border-gray-300 
+            className="mt-2 w-full p-3 rounded-xl border border-gray-300
+            dark:border-zinc-700 dark:text-white
                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
                        outline-none transition-all duration-200"
             value={'Krishna Murthy'}
@@ -66,19 +70,23 @@ export const ProfileTab = () => {
 
         {/* Username */}
         <div>
-          <label htmlFor="username" className="font-medium text-gray-700">
+          <label
+            htmlFor="username"
+            className="font-medium text-gray-700 dark:text-gray-200"
+          >
             Username
           </label>
           <div
-            className="mt-2 flex items-center gap-2 w-full rounded-xl border border-gray-300 
+            className="mt-2 flex items-center gap-2 w-full rounded-xl border border-gray-300
+            dark:border-zinc-700 
                        px-3 py-2 transition-all duration-200 focus-within:ring-2 
-                       focus-within:ring-blue-500 focus-within:border-blue-500 bg-white"
+                       focus-within:ring-blue-500 focus-within:border-blue-500 "
           >
             {/* <User className="text-gray-400" size={18} /> */}
             <input
               id="username"
               type="text"
-              className="w-full border-none outline-none text-gray-700"
+              className="w-full border-none outline-none text-gray-700 dark:text-gray-300"
               placeholder="Choose a username"
               value={username}
               onChange={(e) => setUsername(e.target.value.trim())}
@@ -100,14 +108,17 @@ export const ProfileTab = () => {
 
         {/* Email */}
         <div>
-          <label htmlFor="email" className="font-medium text-gray-700">
+          <label
+            htmlFor="email"
+            className="font-medium text-gray-700 dark:text-gray-200"
+          >
             Email
           </label>
           <input
             type="email"
             id="email"
-            className="mt-2 w-full p-3 rounded-xl border border-gray-300 
-                       focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+            className="mt-2 w-full p-3 rounded-xl border border-gray-300 dark:border-zinc-700
+                       focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white
                        outline-none transition-all duration-200"
             value={'krishnamurthy@mail.com'}
           />
@@ -115,14 +126,17 @@ export const ProfileTab = () => {
 
         {/* Bio */}
         <div>
-          <label htmlFor="bio" className="font-medium text-gray-700">
+          <label
+            htmlFor="bio"
+            className="font-medium text-gray-700 dark:text-gray-200"
+          >
             Bio
           </label>
           <textarea
             id="bio"
             rows={3}
-            className="mt-2 w-full p-3 rounded-xl border border-gray-300 
-                       focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+            className="mt-2 w-full p-3 rounded-xl border border-gray-300 dark:border-zinc-700
+                       focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white
                        outline-none transition-all duration-200 resize-none"
             value={'Product designer and team leader'}
           />

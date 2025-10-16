@@ -26,7 +26,7 @@ export const ProfileSettings = () => {
       />
 
       {/* Tabs */}
-      <div className="inline-flex p-1.5 bg-blue-100/60 rounded-lg backdrop-blur-sm w-fit">
+      <div className="inline-flex p-1.5 gap-2 bg-blue-100/60 dark:bg-zinc-900/40 rounded-lg backdrop-blur-sm w-fit">
         {settingTabs.map((tab, idx) => (
           <div
             key={idx}
@@ -36,8 +36,8 @@ export const ProfileSettings = () => {
               transition-all duration-200
               ${
                 activeTab === idx
-                  ? 'bg-white text-blue-700 shadow-sm'
-                  : 'text-gray-600 hover:text-blue-700 hover:bg-blue-50'
+                  ? 'bg-white dark:bg-zinc-800 text-blue-700 dark:text-cyan-400 shadow-sm'
+                  : 'text-gray-600 dark:text-gray-200 hover:text-blue-700 dark:hover:text-cyan-300 hover:bg-blue-50 dark:hover:bg-zinc-600'
               }
             `}
           >
@@ -47,7 +47,7 @@ export const ProfileSettings = () => {
       </div>
 
       {/* Dynamic content */}
-      <div className="mt-4 p-5 rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-200">
+      <div className="mt-4 p-5 rounded-2xl border border-gray-200 dark:border-zinc-600 bg-white dark:bg-zinc-800 shadow-sm transition-all duration-200">
         {settingTabs[activeTab].component}
       </div>
     </div>
