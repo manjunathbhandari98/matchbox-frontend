@@ -39,3 +39,32 @@ export interface Task {
   completedPercentage: number;
   lastUpdated: string;     // ISO date string
 }
+
+export interface Member {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  profileImg: string;
+  joinedAt: string; // ISO date string
+}
+
+export interface ActiveProject {
+  projectId: string;
+  projectName: string;
+  status: 'in-progress' | 'completed' | 'pending' | 'upcoming';
+  progress: number; // 0–100
+}
+
+export interface Team {
+  teamId: string;
+  teamName: string;
+  teamRole: string;
+  description: string;
+  members: Member[];
+  activeProjects: ActiveProject[];
+  totalMembers: number;
+  totalProjects: number;
+  createdAt: string; // ISO date
+  updatedAt: string; // ISO date
+}
