@@ -14,6 +14,34 @@ export const TeamsList = ({ teams }: TeamProps) => {
     setOpenMenu(openMenu === teamId ? null : teamId);
   };
 
+  //  If no teams exist, show the empty state
+  if (teams.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70vh] text-center p-6">
+        <div className="bg-blue-100 dark:bg-blue-900/40 p-6 rounded-full mb-6 shadow-sm">
+          <Users className="text-blue-600 dark:text-blue-400 w-10 h-10" />
+        </div>
+
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">
+          No Teams Yet
+        </h2>
+        <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-md">
+          You don’t have any teams created yet. Start by adding your first team
+          to collaborate and manage members effectively.
+        </p>
+
+        <button
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-xl shadow-md transition-all duration-200"
+          onClick={() => console.log('Add Team clicked')}
+        >
+          <UserPlus size={20} />
+          <span>Create New Team</span>
+        </button>
+      </div>
+    );
+  }
+
+  //  Otherwise render team cards
   return (
     <div className="grid sm:grid-cols-2 gap-5 relative">
       {teams.map((team: Team) => (
@@ -52,12 +80,11 @@ export const TeamsList = ({ teams }: TeamProps) => {
                     <li
                       className="flex items-center rounded-lg mx-1 gap-2 px-3 py-2 hover:bg-blue-400 hover:text-white cursor-pointer"
                       onClick={() => {
-                        console.log('View Team:', team.teamName);
+                        console.log('Manage Members:', team.teamName);
                         setOpenMenu(null);
                       }}
                     >
-                      {' '}
-                      Manage Memebers
+                      Manage Members
                     </li>
                     <li
                       className="flex items-center rounded-lg mx-1 gap-2 px-3 py-2 hover:bg-blue-400 hover:text-white cursor-pointer"
@@ -66,7 +93,6 @@ export const TeamsList = ({ teams }: TeamProps) => {
                         setOpenMenu(null);
                       }}
                     >
-                      {' '}
                       Edit Team
                     </li>
                     <li
@@ -76,7 +102,6 @@ export const TeamsList = ({ teams }: TeamProps) => {
                         setOpenMenu(null);
                       }}
                     >
-                      {' '}
                       Delete Team
                     </li>
                   </ul>

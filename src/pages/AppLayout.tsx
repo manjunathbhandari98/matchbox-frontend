@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import type { RootState } from '../app/store';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
 import colors from '../constants/colors';
 import { setTheme } from '../redux/themeSlice';
 
@@ -20,6 +21,7 @@ export const AppLayout = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const currentTheme = useSelector((state: RootState) => state.theme.current);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
     const root = document.documentElement; // <html>
@@ -48,10 +50,14 @@ export const AppLayout = () => {
     { mode: 'Dark', value: 'dark', icon: <Moon size={16} /> },
   ];
 
+  if (!user) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <div className="flex h-screen overflow-hidden font-sans bg-gray-50 dark:bg-zinc-900">
       {/* Sidebar */}
-      <aside className="flex flex-col w-64 bg-white dark:bg-zinc-800 shadow-sm p-4 border-r border-gray-200 dark:border-zinc-700">
+      <aside className="flex flex-col w-64 bg-white dark:bg-zinc-900 shadow-sm p-4">
         {/* Logo */}
         <Link
           to="/dashboard"
@@ -93,7 +99,7 @@ export const AppLayout = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Header */}
-        <header className="flex justify-between items-center p-4 bg-primary dark:bg-primary-dark shadow-sm border-b border-gray-200 dark:border-zinc-700">
+        <header className="flex justify-between items-center p-4 bg-primary dark:bg-zinc-900 shadow-sm">
           {/* Search Bar */}
           <div className="flex items-center bg-gray-100 dark:bg-zinc-700 rounded-xl px-3 py-2 gap-2 w-80">
             <input
@@ -136,7 +142,10 @@ export const AppLayout = () => {
               to={'/settings'}
               className="w-8 h-8 bg-blue-600 dark:bg-blue-500 text-white flex items-center justify-center rounded-full font-medium cursor-pointer hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
             >
-              K
+              {user.fullName
+                .split(' ')
+                .map((n: string) => n[0])
+                .join('')}
             </Link>
           </div>
         </header>

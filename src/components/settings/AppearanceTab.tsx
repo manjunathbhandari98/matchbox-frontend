@@ -1,16 +1,37 @@
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../app/store';
+import { setUserInfo } from '../../redux/authSlice';
 import { setTheme } from '../../redux/themeSlice';
+import { updateUser } from '../../services/userService';
 import { PageTitle } from '../ui/PageTitle';
 
 export const AppearanceTab = () => {
   const dispatch = useDispatch();
   const activeTheme = useSelector((state: RootState) => state.theme.current);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const themes = [
     { label: 'Light', value: 'light', desc: 'Clean and bright' },
     { label: 'Dark', value: 'dark', desc: 'Easy on the eyes' },
   ];
+
+  const handleThemeChange = async (value: string) => {
+    try {
+      dispatch(setTheme(value));
+      if (user?.email) {
+        const updatedSettings = await updateUser(user?.email, {
+          settingsRequest: {
+            ...user.settings,
+            theme: value.toUpperCase(),
+          },
+        });
+
+        dispatch(setUserInfo(updatedSettings));
+      }
+    } catch (error) {
+      console.error('Error updating theme:', error);
+    }
+  };
 
   return (
     <div className="p-6 bg-white dark:bg-zinc-800 min-h-[calc(100vh-64px)] rounded-xl">
@@ -27,7 +48,7 @@ export const AppearanceTab = () => {
           {themes.map((theme, idx) => (
             <div
               key={idx}
-              onClick={() => dispatch(setTheme(theme.value))}
+              onClick={() => handleThemeChange(theme.value)}
               className={`
                 w-1/2 cursor-pointer rounded-2xl border-2 p-4 flex flex-col gap-5 transition-all duration-300
                 ${

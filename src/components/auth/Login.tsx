@@ -6,8 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import type { RootState } from '../../app/store';
 import colors from '../../constants/colors';
-import { authFailure, loginSuccess, startLoading } from '../../redux/authSlice';
+import {
+  authFailure,
+  loginSuccess,
+  setUserInfo,
+  startLoading,
+} from '../../redux/authSlice';
 import { loginUser } from '../../services/authService';
+import { getUserInfo } from '../../services/userService';
 import CommonButton from '../ui/CommonButton';
 
 const Login = () => {
@@ -76,7 +82,9 @@ const Login = () => {
     try {
       const res = await loginUser(formData);
       toast.success('Login Successful');
-      dispatch(loginSuccess({ user: res.email, token: res.token }));
+      dispatch(loginSuccess({ token: res.token }));
+      const user = await getUserInfo(res.email);
+      dispatch(setUserInfo(user));
       navigate('/dashboard');
     } catch (error: any) {
       console.error(error);

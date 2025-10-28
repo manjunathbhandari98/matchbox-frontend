@@ -1,6 +1,8 @@
 import { CheckCircle, Clock, FolderGit, Plus, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
 import { Card } from '../components/app-layout/Card';
 import ProjectList from '../components/app-layout/ProjectList';
+import { AddProjectModal } from '../components/modal/AddProjectModal';
 import CommonButton from '../components/ui/CommonButton';
 import { PageTitle } from '../components/ui/PageTitle';
 import colors from '../constants/colors';
@@ -40,6 +42,8 @@ const Dashboard = () => {
     { task: 'Client Presentation', deadLine: '1 Week' },
   ];
 
+  const [projectModalOpen, setProjectModalOpen] = useState(false);
+
   return (
     <div className="p-3">
       <div className="flex items-center justify-between p-2">
@@ -54,6 +58,7 @@ const Dashboard = () => {
           bgColor="blue"
           size="md"
           rounded="md"
+          onClick={() => setProjectModalOpen(true)}
         />
       </div>
       <div className="mt-8">
@@ -108,6 +113,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {projectModalOpen && (
+        <AddProjectModal onClose={() => setProjectModalOpen(false)} />
+      )}
     </div>
   );
 };

@@ -4,7 +4,10 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import colors from '../../constants/colors';
-import { registerUser } from '../../services/authService'; // <-- create this API call
+import {
+  checkUsernameAvailability,
+  registerUser,
+} from '../../services/authService'; // <-- create this API call
 import CommonButton from '../ui/CommonButton';
 
 const Signup = () => {
@@ -28,23 +31,32 @@ const Signup = () => {
     active: true,
   });
 
-  // Simulate username availability check (replace with API call)
   useEffect(() => {
+    const USERNAME_REGEX =
+      /^(?=.{3,20}$)(?!.*[_.]{2})[a-z][a-z0-9._]*[a-z0-9]$/;
+
+    if (!USERNAME_REGEX.test(username)) {
+      setAvailable(false);
+      return;
+    }
+
     if (!username) {
       setAvailable(null);
       return;
     }
 
-    setChecking(true);
-    const delay = setTimeout(() => {
-      // Mock: usernames < 5 chars are "taken"
-      if (username.length >= 5) {
-        setAvailable(true);
-      } else {
-        setAvailable(false);
+    const delay = setTimeout(async () => {
+      try {
+        setChecking(true);
+        const isAvailable = await checkUsernameAvailability(username);
+        setAvailable(isAvailable);
+      } catch (err) {
+        console.error('Error checking username:', err);
+        setAvailable(null);
+      } finally {
+        setChecking(false);
       }
-      setChecking(false);
-    }, 1000);
+    }, 600); // debounce (0.6sec)
 
     return () => clearTimeout(delay);
   }, [username]);

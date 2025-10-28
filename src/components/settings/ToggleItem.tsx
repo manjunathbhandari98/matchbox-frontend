@@ -3,13 +3,21 @@ import { useState } from 'react';
 export const ToggleItem = ({
   title,
   desc,
-  defaultEnabled,
+  defaultEnabled = false,
+  onToggle,
 }: {
   title: string;
   desc: string;
   defaultEnabled: boolean;
+  onToggle: (newValue: boolean) => void;
 }) => {
   const [enabled, setEnabled] = useState(defaultEnabled);
+
+  const handleChange = () => {
+    const newValue = !enabled;
+    setEnabled(newValue);
+    onToggle(newValue);
+  };
 
   return (
     <div className="flex items-center justify-between p-4 rounded-lg shadow hover:shadow-md transition-shadow duration-300">
@@ -22,7 +30,7 @@ export const ToggleItem = ({
 
       {/* Toggle */}
       <button
-        onClick={() => setEnabled(!enabled)}
+        onClick={handleChange}
         className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-300 ${
           enabled ? 'bg-blue-500' : 'bg-gray-300 dark:bg-zinc-700'
         }`}

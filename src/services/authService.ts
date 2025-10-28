@@ -2,6 +2,18 @@ import axios from "axios";
 import type { RegisterData } from "../types";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
+export const checkUsernameAvailability = async (username: string) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/user/check-username`, {
+      params: { username },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error checking username availability:", error);
+    throw error;
+  }
+};
+
 export const loginUser = async (data: { email: string; password: string; role: string }) => {
   try {
     const response = await axios.post(`${BASE_URL}/auth/login`, data);

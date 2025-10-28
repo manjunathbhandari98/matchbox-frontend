@@ -1,32 +1,69 @@
 import { Funnel, Grid, List, Plus, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import type { RootState } from '../app/store';
+import NoProjectsSection from '../components/app-layout/NoProjectsSection';
 import ProjectList from '../components/app-layout/ProjectList';
 import CommonButton from '../components/ui/CommonButton';
 import { PageTitle } from '../components/ui/PageTitle';
 import colors from '../constants/colors';
-import { Projects as mockProjects } from '../data/projects';
+import { getProjects } from '../services/projectService';
+import type { Project } from '../types';
 
 export const Projects = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState('In Progress');
   const [gridView, setGridView] = useState(true);
+  const [projects, setProjects] = useState<Project[]>([]);
 
-  const inProgressProjects = mockProjects.filter(
-    (project) => project.status === 'in-progress'
-  );
-  const completedProjects = mockProjects.filter(
-    (project) => project.status === 'completed'
-  );
-  const pendingProjects = mockProjects.filter(
-    (project) => project.status === 'pending'
-  );
-  const upcomingProjects = mockProjects.filter(
-    (project) => project.status === 'upcoming'
-  );
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const res = await getProjects(user.id);
+      setProjects(res);
+    };
+    fetchProjects();
+  }, [user]);
+
+  const inProgressProjects = projects.filter((p) => p.status === 'IN_PROGRESS');
+  const completedProjects = projects.filter((p) => p.status === 'COMPLETED');
+  const pendingProjects = projects.filter((p) => p.status === 'PENDING');
+  const upcomingProjects = projects.filter((p) => p.status === 'UPCOMMING');
 
   const tabs = ['In Progress', 'Pending', 'Completed', 'Upcomming'];
 
+  if (projects.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70vh] text-center p-6">
+        <div className="bg-blue-100 dark:bg-blue-900/40 p-6 rounded-full mb-6 shadow-sm">
+          <Plus className="text-blue-600 dark:text-blue-400 w-10 h-10" />
+        </div>
+
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">
+          No Projects Yet
+        </h2>
+        <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-md">
+          You haven’t created any projects yet. Start by creating your first
+          project to organize your work and collaborate easily.
+        </p>
+
+        <CommonButton
+          text="Create New Project"
+          icon={<Plus />}
+          borderColor={colors.primaryDark}
+          bgColor="blue"
+          size="md"
+          rounded="lg"
+          onClick={() => navigate('/create-project')}
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className="p-2 text-gray-800 dark:text-gray-100">
+    <div className="relative p-2 text-gray-800 dark:text-gray-100">
       <div className="flex justify-between items-center">
         <PageTitle title="Projects" desc="Manage and Track All your projects" />
         <CommonButton
@@ -36,6 +73,7 @@ export const Projects = () => {
           bgColor="blue"
           size="md"
           rounded="md"
+          onClick={() => navigate('/create-project')}
         />
       </div>
 
@@ -107,31 +145,62 @@ export const Projects = () => {
         </div>
 
         {/* Tab Content */}
-        <div className="mt-5 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-5 shadow-sm transition-all duration-300">
-          {activeTab === 'In Progress' && (
-            <ProjectList
-              projects={inProgressProjects}
-              layout={gridView ? 'grid' : 'list'}
-            />
-          )}
-          {activeTab === 'Pending' && (
-            <ProjectList
-              projects={pendingProjects}
-              layout={gridView ? 'grid' : 'list'}
-            />
-          )}
-          {activeTab === 'Completed' && (
-            <ProjectList
-              projects={completedProjects}
-              layout={gridView ? 'grid' : 'list'}
-            />
-          )}
-          {activeTab === 'Upcomming' && (
-            <ProjectList
-              projects={upcomingProjects}
-              layout={gridView ? 'grid' : 'list'}
-            />
-          )}
+        <div className="mt-5 bg-white dark:bg-zinc-900 p-5 shadow-sm transition-all duration-300">
+          {activeTab === 'In Progress' &&
+            (inProgressProjects.length > 0 ? (
+              <ProjectList
+                projects={inProgressProjects}
+                layout={gridView ? 'grid' : 'list'}
+              />
+            ) : (
+              <NoProjectsSection
+                title="No In-Progress Projects"
+                desc="You don’t have any active projects right now. Start a new one to begin tracking your work."
+                onCreate={() => navigate('/create-project')}
+              />
+            ))}
+
+          {activeTab === 'Pending' &&
+            (pendingProjects.length > 0 ? (
+              <ProjectList
+                projects={pendingProjects}
+                layout={gridView ? 'grid' : 'list'}
+              />
+            ) : (
+              <NoProjectsSection
+                title="No Pending Projects"
+                desc="All caught up! Create a project and mark it as pending to plan ahead."
+                onCreate={() => navigate('/create-project')}
+              />
+            ))}
+
+          {activeTab === 'Completed' &&
+            (completedProjects.length > 0 ? (
+              <ProjectList
+                projects={completedProjects}
+                layout={gridView ? 'grid' : 'list'}
+              />
+            ) : (
+              <NoProjectsSection
+                title="No Completed Projects"
+                desc="You haven’t completed any projects yet. Once you finish one, it will appear here."
+                onCreate={() => navigate('/create-project')}
+              />
+            ))}
+
+          {activeTab === 'Upcomming' &&
+            (upcomingProjects.length > 0 ? (
+              <ProjectList
+                projects={upcomingProjects}
+                layout={gridView ? 'grid' : 'list'}
+              />
+            ) : (
+              <NoProjectsSection
+                title="No Upcoming Projects"
+                desc="No future projects yet. Plan ahead and create one to stay organized."
+                onCreate={() => navigate('/create-project')}
+              />
+            ))}
         </div>
       </div>
     </div>

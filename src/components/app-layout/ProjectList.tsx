@@ -89,10 +89,10 @@ const ProjectList: React.FC<ProjectListProps> = ({
               {/* Header */}
               <div className="flex justify-between items-center mt-4">
                 <h3 className="font-medium text-gray-800 dark:text-gray-100">
-                  {project.projectName}
+                  {project.name}
                 </h3>
                 <div className="flex -space-x-2 items-center">
-                  {project.teamMembers.slice(0, 3).map((member, idx) => (
+                  {/* {project.teamMembers.slice(0, 3).map((member, idx) => (
                     <div
                       key={idx}
                       className="rounded-full w-8 h-8 flex items-center justify-center text-white font-medium text-sm bg-gradient-to-br from-purple-500 to-pink-500 border-2 border-white dark:border-zinc-800"
@@ -100,10 +100,10 @@ const ProjectList: React.FC<ProjectListProps> = ({
                     >
                       {member[0]}
                     </div>
-                  ))}
-                  {project.teamMembers.length > 3 && (
+                  ))} */}
+                  {project.collaborators.length > 3 && (
                     <div className="rounded-full w-8 h-8 flex items-center justify-center text-white font-medium text-sm bg-gray-400 dark:bg-zinc-600 border-2 border-white dark:border-zinc-800">
-                      +{project.teamMembers.length - 3}
+                      +{project.collaborators.length - 3}
                     </div>
                   )}
                 </div>
@@ -119,16 +119,16 @@ const ProjectList: React.FC<ProjectListProps> = ({
                 <div className="flex gap-1 items-center">
                   <span>{project.completedTasks}</span>
                   <span>/</span>
-                  <span>{project.totalAssignedTasks}</span>
+                  <span>{project.totalTasks}</span>
                 </div>
-                <span>{project.completedPercentage}%</span>
+                <span>{project.progress}%</span>
               </div>
 
               {/* Progress Bar */}
               <div className="w-full h-3 bg-gray-200 dark:bg-zinc-700 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full transition-all duration-500"
-                  style={{ width: `${project.completedPercentage}%` }}
+                  style={{ width: `${project.progress}%` }}
                 />
               </div>
 

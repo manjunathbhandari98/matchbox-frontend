@@ -6,22 +6,53 @@ export interface RegisterData {
     password:string
 }
 
+// Theme type
+export type Theme = 'LIGHT' | 'DARK';
+
+// User role type
+export type UserRole = 'USER' | 'ADMIN';
+
+
+// Settings interface
+export interface UserSettings {
+  theme: Theme;
+  emailNotifications: boolean;
+  taskAssignmentNotifications: boolean;
+  projectUpdateNotifications: boolean;
+  commentsAndMentionNotifications: boolean;
+  weeklySummary: boolean;
+  twoFactorAuth: boolean;
+}
+
+// User interface
+export interface UserType {
+  fullName: string;
+  username: string;
+  email: string;
+  bio?: string | null;
+  active: boolean;
+  lastSeen?: string | null; // ISO string from backend
+  role: UserRole;
+  settings: UserSettings;
+}
+
+
 // types/project.ts
-export type Status = "pending" | "in-progress" | "completed" | "upcoming";
+export type Status = "PENDING" | "IN_PROGRESS" | "COMPLETED" | "UPCOMMING";
 export type Priority = "low" | "medium" | "high";
 
 export interface Project {
   id: string;
-  projectName: string;
+  name: string;
   description: string;
   status: Status;
-  totalAssignedTasks: number;
+  totalTasks: number;
   completedTasks: number;
   startDate: string;       // ISO date string
   dueDate: string;         // ISO date string
   priority: Priority;
-  teamMembers: string[];
-  completedPercentage: number;
+  collaborators: string[];
+  progress: number;
   lastUpdated: string;     // ISO date string
 }
 
