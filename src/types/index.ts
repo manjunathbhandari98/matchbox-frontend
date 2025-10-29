@@ -29,7 +29,9 @@ export interface UserType {
   fullName: string;
   username: string;
   email: string;
+  avatar?:string;
   bio?: string | null;
+  invitationStatus?:'PENDING'|'NONE'|'ACCEPTED'|'REJECTED';
   active: boolean;
   lastSeen?: string | null; // ISO string from backend
   role: UserRole;
@@ -98,4 +100,14 @@ export interface Team {
   totalProjects: number;
   createdAt: string; // ISO date
   updatedAt: string; // ISO date
+}
+
+export interface NotificationType {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  createdAt: string;
+  isRead?: boolean;
+  invitationId?: string;
 }

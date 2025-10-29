@@ -8,6 +8,8 @@ import { AppLayout } from './pages/AppLayout';
 import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
+import { InviteMemberPage } from './pages/InviteMemberPage';
+import { Notifications } from './pages/Notifications';
 import { ProfileSettings } from './pages/ProfileSettings';
 import { Projects } from './pages/Projects';
 import { Tasks } from './pages/Tasks';
@@ -82,6 +84,8 @@ function App() {
         <Route path="teams" element={<Teams />} />
         <Route path="settings" element={<ProfileSettings />} />
         <Route path="/create-project" element={<AddProject />} />
+        <Route path="/invite-member" element={<InviteMemberPage />} />
+        <Route path="/notifications" element={<Notifications />} />
       </Route>
     </Routes>
   );

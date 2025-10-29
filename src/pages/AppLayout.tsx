@@ -133,9 +133,12 @@ export const AppLayout = () => {
             </div>
 
             {/* Notifications */}
-            <div className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-zinc-700 cursor-pointer text-gray-700 dark:text-gray-300">
+            <Link
+              to={'/notifications'}
+              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-zinc-700 cursor-pointer text-gray-700 dark:text-gray-300"
+            >
               <Bell size={20} />
-            </div>
+            </Link>
 
             {/* Profile Avatar */}
             <Link

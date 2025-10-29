@@ -1,5 +1,6 @@
 import { Shield, UserPlus, Users } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MembersList } from '../components/teams/MembersList';
 import { TeamsList } from '../components/teams/TeamsList';
 import CommonButton from '../components/ui/CommonButton';
@@ -7,6 +8,8 @@ import { PageTitle } from '../components/ui/PageTitle';
 import colors from '../constants/colors';
 import { teams } from '../data/teams';
 export const Teams = () => {
+  const navigate = useNavigate();
+
   const tabs = [
     { label: 'Teams', icon: <Users size={20} /> },
     { label: 'All Members', icon: <Shield size={20} /> },
@@ -26,6 +29,9 @@ export const Teams = () => {
           bgColor={colors.primary}
           size="md"
           rounded="md"
+          onClick={
+            activeTab === 0 ? () => {} : () => navigate('/invite-member')
+          }
         />
       </div>
 

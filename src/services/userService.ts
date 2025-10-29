@@ -48,3 +48,19 @@ export const updatePassword = async(email:string, updatePasswordData:any) =>{
     throw error; 
   }
 }
+
+export const searchUsers = async (query:string, currentUserId: string) =>{
+try {
+  const token = localStorage.getItem('token');
+  const res = await axios.get(`${BASE_URL}/user/search`,{
+     params: { q: query, currentUserId },
+    headers:{
+      Authorization:`Bearer ${token}`
+    }
+  })
+  return res.data;
+} catch (error:any) {
+   console.error("Password Incorrect:", error?.response?.data || error.message);
+    throw error; 
+}
+}
