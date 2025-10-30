@@ -1,32 +1,36 @@
 import { MoreVertical, Search } from 'lucide-react';
-import { useState } from 'react';
-import type { Member, Team } from '../../types';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../app/store';
+import { getAllInvitedMembers } from '../../services/invitationService';
+import { type UserType } from '../../types';
 import { Avatar } from '../ui/Avatar';
 import { PageTitle } from '../ui/PageTitle';
 
-type TeamProps = {
-  teams: Team[];
-};
+export const MembersList = () => {
+  const currentUser = useSelector((state: RootState) => state.auth.user);
 
-export const MembersList = ({ teams }: TeamProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [openMenu, setOpenMenu] = useState<string | number | null>(null);
+  const [members, setMembers] = useState<UserType[]>([]);
 
-  // Flatten team members
-  const allMembers = teams.flatMap((team: Team) =>
-    team.members.map((m) => ({
-      ...m,
-      teamName: team.teamName,
-      teamRole: team.teamRole,
-    }))
-  );
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const data = await getAllInvitedMembers(currentUser.id);
+        setMembers(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchMembers();
+  }, [currentUser]);
 
   // Filtered members based on search
-  const filteredMembers = allMembers.filter(
+  const filteredMembers = members.filter(
     (member) =>
-      member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.teamName.toLowerCase().includes(searchTerm.toLowerCase())
+      member.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      member.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const toggleMenu = (id: string | number) => {
@@ -55,17 +59,17 @@ export const MembersList = ({ teams }: TeamProps) => {
         />
 
         <div className="flex flex-col divide-y divide-gray-100 dark:divide-zinc-700 mt-4">
-          {filteredMembers.map((member: Member, idx) => (
+          {filteredMembers.map((member: UserType, idx) => (
             <div
               key={idx}
               className="flex justify-between items-center py-4 hover:bg-cyan-100/30  rounded-lg px-2 transition-all duration-200"
             >
               {/* Left: Avatar & Member Info */}
               <div className="flex items-center gap-4">
-                <Avatar name={member.name} size={10} />
+                <Avatar name={member.fullName} size={10} />
                 <div className="flex flex-col">
                   <h2 className="font-semibold text-gray-800 dark:text-gray-200">
-                    {member.name}
+                    {member.fullName}
                   </h2>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     {member.email}
@@ -79,7 +83,19 @@ export const MembersList = ({ teams }: TeamProps) => {
                   {member.role}
                 </div>
                 <div className="px-3 py-1.5 text-xs font-medium rounded-full bg-blue-100 text-blue-700">
-                  Member
+                  {member.invitationStatus === 'PENDING' ? (
+                    <span className="text-sm text-yellow-600 font-medium">
+                      Requested
+                    </span>
+                  ) : member.invitationStatus === 'ACCEPTED' ? (
+                    <span className="text-sm text-green-600 font-medium">
+                      Member
+                    </span>
+                  ) : (
+                    <span className="text-sm text-red-500 font-medium">
+                      Rejected
+                    </span>
+                  )}
                 </div>
                 <div className="relative">
                   <MoreVertical

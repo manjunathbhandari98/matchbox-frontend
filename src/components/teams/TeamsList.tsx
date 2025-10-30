@@ -5,16 +5,26 @@ import { Avatar } from '../ui/Avatar';
 
 type TeamProps = {
   teams: Team[];
+  onCreate?: () => void;
+  onManageMembers?: (teamId: string) => void;
+  onEdit?: (teamId: string) => void;
+  onDelete?: (teamId: string) => void;
 };
 
-export const TeamsList = ({ teams }: TeamProps) => {
+export const TeamsList = ({
+  teams,
+  onCreate,
+  onManageMembers,
+  onEdit,
+  onDelete,
+}: TeamProps) => {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   const toggleMenu = (teamId: string) => {
     setOpenMenu(openMenu === teamId ? null : teamId);
   };
 
-  //  If no teams exist, show the empty state
+  // Empty state
   if (teams.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[70vh] text-center p-6">
@@ -32,7 +42,7 @@ export const TeamsList = ({ teams }: TeamProps) => {
 
         <button
           className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-xl shadow-md transition-all duration-200"
-          onClick={() => console.log('Add Team clicked')}
+          onClick={onCreate}
         >
           <UserPlus size={20} />
           <span>Create New Team</span>
@@ -41,26 +51,35 @@ export const TeamsList = ({ teams }: TeamProps) => {
     );
   }
 
-  //  Otherwise render team cards
+  // Render teams
   return (
     <div className="grid sm:grid-cols-2 gap-5 relative">
       {teams.map((team: Team) => (
         <div
-          key={team.teamId}
+          key={team.id}
           className="relative bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-200"
         >
           {/* Header */}
           <div className="flex justify-between items-start">
             <div className="flex gap-4">
-              <div className="bg-blue-600 w-12 h-12 text-white rounded-xl flex justify-center items-center">
-                <Users />
-              </div>
+              {team.avatar ? (
+                <img
+                  src={team.avatar}
+                  alt={team.name}
+                  className="w-12 h-12 rounded-xl object-cover border border-gray-300 dark:border-zinc-700"
+                />
+              ) : (
+                <div className="bg-blue-600 w-12 h-12 text-white rounded-xl flex justify-center items-center">
+                  <Users />
+                </div>
+              )}
+
               <div className="flex flex-col">
                 <h2 className="font-semibold text-lg text-gray-800 dark:text-gray-200">
-                  {team.teamName}
+                  {team.name}
                 </h2>
-                <p className="text-sm text-gray-500 dark:text-gray-200">
-                  {team.teamRole}
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {team.description || 'No description'}
                 </p>
               </div>
             </div>
@@ -70,35 +89,34 @@ export const TeamsList = ({ teams }: TeamProps) => {
               <MoreVertical
                 size={20}
                 className="cursor-pointer text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
-                onClick={() => toggleMenu(team.teamId)}
+                onClick={() => toggleMenu(team.id)}
               />
 
-              {/* Dropdown menu */}
-              {openMenu === team.teamId && (
-                <div className="absolute right-0 top-6 w-50 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-lg z-20 animate-fadeIn">
+              {openMenu === team.id && (
+                <div className="absolute right-0 top-6 w-44 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-lg z-20 animate-fadeIn">
                   <ul className="flex flex-col text-sm text-gray-900 dark:text-gray-200 font-medium">
                     <li
-                      className="flex items-center rounded-lg mx-1 gap-2 px-3 py-2 hover:bg-blue-400 hover:text-white cursor-pointer"
+                      className="px-3 py-2 hover:bg-blue-400 hover:text-white rounded-lg cursor-pointer"
                       onClick={() => {
-                        console.log('Manage Members:', team.teamName);
+                        onManageMembers?.(team.id);
                         setOpenMenu(null);
                       }}
                     >
                       Manage Members
                     </li>
                     <li
-                      className="flex items-center rounded-lg mx-1 gap-2 px-3 py-2 hover:bg-blue-400 hover:text-white cursor-pointer"
+                      className="px-3 py-2 hover:bg-blue-400 hover:text-white rounded-lg cursor-pointer"
                       onClick={() => {
-                        console.log('Edit:', team.teamName);
+                        onEdit?.(team.id);
                         setOpenMenu(null);
                       }}
                     >
                       Edit Team
                     </li>
                     <li
-                      className="flex items-center text-red-500 rounded-lg mx-1 gap-2 px-3 py-2 hover:bg-blue-400 hover:text-white cursor-pointer"
+                      className="px-3 py-2 text-red-500 hover:bg-blue-400 hover:text-white rounded-lg cursor-pointer"
                       onClick={() => {
-                        console.log('Delete:', team.teamName);
+                        onDelete?.(team.id);
                         setOpenMenu(null);
                       }}
                     >
@@ -110,16 +128,11 @@ export const TeamsList = ({ teams }: TeamProps) => {
             </div>
           </div>
 
-          {/* Description */}
-          <p className="text-gray-600 dark:text-gray-400 text-sm mt-2 mb-3">
-            {team.description}
-          </p>
-
           {/* Members */}
           <div className="flex justify-between items-center mt-4">
             <div className="flex -space-x-2">
               {team.members.slice(0, 3).map((member, idx) => (
-                <Avatar key={idx} name={member.name} size={8} />
+                <Avatar key={idx} name={member.fullName} />
               ))}
               {team.members.length > 3 && (
                 <div className="w-8 h-8 rounded-full bg-gray-400 text-white flex items-center justify-center text-sm font-medium border-2 border-white">
@@ -128,7 +141,7 @@ export const TeamsList = ({ teams }: TeamProps) => {
               )}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-300 flex items-center gap-1">
-              <Users size={15} /> {team.totalMembers}
+              <Users size={15} /> {team.members.length}
             </div>
           </div>
 
@@ -149,7 +162,10 @@ export const TeamsList = ({ teams }: TeamProps) => {
       ))}
 
       {/* Add Team Card */}
-      <div className="group flex flex-col items-center justify-center text-center gap-3 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-2xl p-8 bg-white dark:bg-zinc-800 shadow-sm transition-all duration-300 hover:border-blue-500 hover:shadow-lg hover:bg-blue-50 dark:hover:bg-zinc-800 cursor-pointer">
+      <div
+        className="group flex flex-col items-center justify-center text-center gap-3 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-2xl p-8 bg-white dark:bg-zinc-800 shadow-sm transition-all duration-300 hover:border-blue-500 hover:shadow-lg hover:bg-blue-50 dark:hover:bg-zinc-800 cursor-pointer"
+        onClick={onCreate}
+      >
         <div className="bg-blue-100 dark:bg-zinc-700 group-hover:bg-blue-200 text-blue-600 dark:text-blue-500 rounded-xl p-4 transition-colors duration-300">
           <UserPlus size={28} />
         </div>

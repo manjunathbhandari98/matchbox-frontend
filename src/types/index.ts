@@ -26,6 +26,7 @@ export interface UserSettings {
 
 // User interface
 export interface UserType {
+  id:string;
   fullName: string;
   username: string;
   email: string;
@@ -89,17 +90,54 @@ export interface ActiveProject {
   progress: number; // 0–100
 }
 
-export interface Team {
-  teamId: string;
-  teamName: string;
-  teamRole: string;
+
+export interface ActiveProject {
+  id: string;
+  name: string;
+  description?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface MemberResponse {
+  id: string;
+  fullName: string;
+  username: string;
+  email: string;
+  avatar: string | null;
+  bio?: string;
+  active: boolean;
+  lastSeen?: string | null;
+  role: 'ADMIN' | 'USER'; // system-level role
+  teamRole: 'TEAM_LEAD' | 'DEVELOPER' | 'DESIGNER' | 'TESTER' | 'MANAGER'; // role within the team
+  invitationStatus: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'SELF';
+}
+
+export type TeamRole = "TEAM_LEAD" | "DEVELOPER" | "DESIGNER" | "TESTER" | "MANAGER";
+
+export interface MemberRequest {
+  id: string;
+  role: TeamRole
+}
+
+export interface TeamResponse {
+  id: string;
+  name: string;
   description: string;
-  members: Member[];
-  activeProjects: ActiveProject[];
-  totalMembers: number;
-  totalProjects: number;
-  createdAt: string; // ISO date
-  updatedAt: string; // ISO date
+  avatar: string;
+  createdBy: string;
+  members: MemberResponse[];
+  projects?: Project[] | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TeamRequest {
+  id?: string;
+  name: string;
+  description: string;
+  avatar: string;
+  createdBy: string;
+  members: MemberRequest[];
 }
 
 export interface NotificationType {

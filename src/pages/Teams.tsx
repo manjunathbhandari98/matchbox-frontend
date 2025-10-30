@@ -1,21 +1,36 @@
 import { Shield, UserPlus, Users } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import type { RootState } from '../app/store';
 import { MembersList } from '../components/teams/MembersList';
 import { TeamsList } from '../components/teams/TeamsList';
 import CommonButton from '../components/ui/CommonButton';
 import { PageTitle } from '../components/ui/PageTitle';
 import colors from '../constants/colors';
-import { teams } from '../data/teams';
+import { getTeams } from '../services/teamService';
 export const Teams = () => {
   const navigate = useNavigate();
-
+  const currentUser = useSelector((state: RootState) => state.auth.user);
   const tabs = [
     { label: 'Teams', icon: <Users size={20} /> },
     { label: 'All Members', icon: <Shield size={20} /> },
   ];
 
   const [activeTab, setActiveTab] = useState(0);
+  const [teams, setTeams] = useState([]);
+
+  useEffect(() => {
+    const fetchTeams = async () => {
+      try {
+        const data = await getTeams(currentUser.id);
+        setTeams(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchTeams();
+  }, [currentUser]);
 
   return (
     <div className="p-5 flex flex-col gap-6 bg-gray-50 dark:bg-zinc-900 min-h-screen">
@@ -30,7 +45,9 @@ export const Teams = () => {
           size="md"
           rounded="md"
           onClick={
-            activeTab === 0 ? () => {} : () => navigate('/invite-member')
+            activeTab === 0
+              ? () => navigate('/create-team')
+              : () => navigate('/invite-member')
           }
         />
       </div>
@@ -54,11 +71,7 @@ export const Teams = () => {
       </div>
 
       {/* Dynamic Content */}
-      {activeTab === 0 ? (
-        <TeamsList teams={teams} />
-      ) : (
-        <MembersList teams={teams} />
-      )}
+      {activeTab === 0 ? <TeamsList teams={teams} /> : <MembersList />}
     </div>
   );
 };

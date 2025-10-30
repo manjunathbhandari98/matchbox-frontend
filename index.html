@@ -12,5 +12,10 @@
   <body>
     <div id="root" class="bg-white dark:bg-blue-950"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+  const theme = localStorage.getItem('theme') || 'light';
+  document.documentElement.classList.add(theme);
+</script>
+
   </body>
 </html>

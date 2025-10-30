@@ -30,3 +30,18 @@ export const inviteMemberToTeam = async (teamId: string, userId: string) => {
     throw error.response?.data || "Failed to invite member";
   }
 };
+
+export const getAllInvitedMembers = async(senderId:string) =>{
+  const token = localStorage.getItem('token');
+  try {
+    const res = await axios.get(`${BASE_URL}/team/members/${senderId}`,{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    })
+    return res.data;
+  } catch (error:any) {
+     console.error("Error Fetching members:", error);
+    throw error.response?.data || "Failed to Fetch Members";
+  }
+}

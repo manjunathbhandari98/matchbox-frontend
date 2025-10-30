@@ -15,7 +15,9 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import type { RootState } from '../app/store';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import colors from '../constants/colors';
+import { setUserInfo } from '../redux/authSlice';
 import { setTheme } from '../redux/themeSlice';
+import { updateUser } from '../services/userService';
 
 export const AppLayout = () => {
   const location = useLocation();
@@ -49,6 +51,23 @@ export const AppLayout = () => {
     { mode: 'Light', value: 'light', icon: <Sun size={16} /> },
     { mode: 'Dark', value: 'dark', icon: <Moon size={16} /> },
   ];
+
+  const handleThemeChange = async (value: string) => {
+    try {
+      dispatch(setTheme(value));
+      if (user?.email) {
+        const updatedSettings = await updateUser(user?.email, {
+          settingsRequest: {
+            ...user.settings,
+            theme: value.toUpperCase(),
+          },
+        });
+        dispatch(setUserInfo(updatedSettings));
+      }
+    } catch (error) {
+      console.error('Error updating theme:', error);
+    }
+  };
 
   if (!user) {
     return <LoadingSpinner />;
@@ -120,7 +139,7 @@ export const AppLayout = () => {
               {themeModes.map((mode, index) => (
                 <div
                   key={index}
-                  onClick={() => dispatch(setTheme(mode.value))}
+                  onClick={() => handleThemeChange(mode.value)}
                   className={`p-2 rounded-full cursor-pointer flex items-center justify-center transition-colors duration-200 ${
                     currentTheme === mode.value
                       ? 'bg-gray-900 dark:bg-blue-600 text-white'

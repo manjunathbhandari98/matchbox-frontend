@@ -6,6 +6,7 @@ import { AddProject } from './pages/AddProject';
 import { Analytics } from './pages/Analytics';
 import { AppLayout } from './pages/AppLayout';
 import AuthPage from './pages/AuthPage';
+import CreateTeamPage from './pages/CreateTeamPage';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import { InviteMemberPage } from './pages/InviteMemberPage';
@@ -38,12 +39,15 @@ function App() {
     };
 
     fetchUser();
-  }, [dispatch, user?.email]); // safe optional chaining
+  }, [dispatch, user?.email]);
 
-  // ✅ Initialize theme safely (fallback to 'light')
+  // Initialize theme safely (fallback to 'light')
   useEffect(() => {
-    const theme = user?.settings?.theme?.toLowerCase() || 'light';
-    dispatch(initializeTheme(theme));
+    if (user?.settings?.theme) {
+      const theme = user.settings.theme.toLowerCase();
+      localStorage.setItem('theme', theme);
+      dispatch(initializeTheme(theme));
+    }
   }, [user?.settings?.theme, dispatch]);
 
   return (
@@ -86,6 +90,7 @@ function App() {
         <Route path="/create-project" element={<AddProject />} />
         <Route path="/invite-member" element={<InviteMemberPage />} />
         <Route path="/notifications" element={<Notifications />} />
+        <Route path="/create-team" element={<CreateTeamPage />} />
       </Route>
     </Routes>
   );

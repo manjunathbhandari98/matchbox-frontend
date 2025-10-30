@@ -33,7 +33,6 @@ export const Notifications = () => {
     const fetchNotifications = async () => {
       try {
         const res = await getNotifications(currentUser.id);
-
         dispatch(setNotifications(res));
       } catch (err) {
         console.error('Error fetching notifications:', err);
@@ -79,7 +78,6 @@ export const Notifications = () => {
           Notifications
         </h1>
       </div>
-
       {/* Empty state */}
       {notifications?.length === 0 ? (
         <div className="text-center text-gray-500 mt-10">
