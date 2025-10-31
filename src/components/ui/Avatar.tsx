@@ -12,11 +12,12 @@ const sizeClasses: Record<number, string> = {
 };
 
 export const Avatar = ({ name, size = 8, className }: AvatarProps) => {
-  const initials = name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase();
+  const initials =
+    name
+      ?.split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase() || '??';
 
   const sizeClass = sizeClasses[size] || 'w-10 h-10 text-base';
 

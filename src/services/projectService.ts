@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 export const getProjects = async(userId:string) =>{
     const token = localStorage.getItem('token');
     try {
-        const res = await axios.get(`${BASE_URL}/project?userId=${userId}`,{
+        const res = await axios.get(`${BASE_URL}/project/user?userId=${userId}`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }

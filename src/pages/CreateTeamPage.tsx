@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { MoveLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import type { RootState } from '../app/store';
 import { AddTeamMemberModal } from '../components/modal/AddTeamMemberModal';
 import { getAllInvitedMembers } from '../services/invitationService';
@@ -10,7 +12,7 @@ import type { TeamRequest, TeamRole, UserType } from '../types';
 
 const CreateTeamPage = () => {
   const currentUser = useSelector((state: RootState) => state.auth.user);
-
+  const navigate = useNavigate();
   const [team, setTeam] = useState<TeamRequest>({
     name: '',
     description: '',
@@ -82,6 +84,14 @@ const CreateTeamPage = () => {
     try {
       await createTeam(team);
       toast.success('Team created successfully!');
+      setTeam({
+        name: '',
+        description: '',
+        avatar: '',
+        createdBy: currentUser.id,
+        members: [{ id: currentUser.id, role: 'TEAM_LEAD' }],
+      });
+      navigate('/teams');
     } catch (error) {
       console.error(error);
       toast.error('Error while creating team');
@@ -90,6 +100,15 @@ const CreateTeamPage = () => {
 
   return (
     <div className="p-6 text-gray-900 dark:text-gray-100 rounded-xl shadow-sm transition-colors duration-300">
+      <button
+        onClick={() => navigate(-1)} // optional if using React Router
+        className="flex items-center gap-2 px-4 py-2 my-4 bg-gray-100 hover:bg-gray-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-xl transition-colors shadow-sm"
+      >
+        <MoveLeft className="text-gray-700 dark:text-gray-300" size={20} />
+        <span className="text-gray-800 dark:text-gray-200 font-medium">
+          Go Back
+        </span>
+      </button>
       <h1 className="text-2xl font-semibold mb-6 text-zinc-800 dark:text-gray-100">
         Create New Team
       </h1>

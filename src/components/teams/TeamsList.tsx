@@ -1,24 +1,58 @@
 import { ArrowRight, MoreVertical, UserPlus, Users } from 'lucide-react';
-import { useState } from 'react';
-import type { Team } from '../../types';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../app/store';
+import { getAllInvitedMembers } from '../../services/invitationService';
+import type { TeamResponse, UserType } from '../../types';
+import { EditTeamModal } from '../modal/EditTeamModal';
+import { ManageMembersModal } from '../modal/ManageMemberModal';
 import { Avatar } from '../ui/Avatar';
 
 type TeamProps = {
-  teams: Team[];
+  teams: TeamResponse[];
   onCreate?: () => void;
   onManageMembers?: (teamId: string) => void;
   onEdit?: (teamId: string) => void;
   onDelete?: (teamId: string) => void;
+  onUpdateTeam?: (updatedTeam: TeamResponse) => void;
 };
 
 export const TeamsList = ({
   teams,
   onCreate,
   onManageMembers,
-  onEdit,
   onDelete,
+  onUpdateTeam,
 }: TeamProps) => {
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedTeamId, setSelectedTeamId] = useState<string>('');
+  const [showManageMemberModal, setShowManageMemberModal] = useState(false);
+  const [members, setMembers] = useState<UserType[]>([]);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const data = await getAllInvitedMembers(currentUser.id);
+        const activeMembers = data.filter(
+          (m: UserType) => m.invitationStatus === 'ACCEPTED'
+        );
+
+        // Include self as TEAM_LEAD
+        const withSelf = [
+          ...activeMembers,
+          { ...currentUser, invitationStatus: 'SELF' },
+        ];
+
+        setMembers(withSelf);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchMembers();
+  }, [currentUser]);
 
   const toggleMenu = (teamId: string) => {
     setOpenMenu(openMenu === teamId ? null : teamId);
@@ -54,7 +88,7 @@ export const TeamsList = ({
   // Render teams
   return (
     <div className="grid sm:grid-cols-2 gap-5 relative">
-      {teams.map((team: Team) => (
+      {teams.map((team: TeamResponse) => (
         <div
           key={team.id}
           className="relative bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-200"
@@ -99,6 +133,8 @@ export const TeamsList = ({
                       className="px-3 py-2 hover:bg-blue-400 hover:text-white rounded-lg cursor-pointer"
                       onClick={() => {
                         onManageMembers?.(team.id);
+                        setSelectedTeamId(team.id);
+                        setShowManageMemberModal(true);
                         setOpenMenu(null);
                       }}
                     >
@@ -107,7 +143,8 @@ export const TeamsList = ({
                     <li
                       className="px-3 py-2 hover:bg-blue-400 hover:text-white rounded-lg cursor-pointer"
                       onClick={() => {
-                        onEdit?.(team.id);
+                        setSelectedTeamId(team.id);
+                        setShowEditModal(true);
                         setOpenMenu(null);
                       }}
                     >
@@ -131,9 +168,11 @@ export const TeamsList = ({
           {/* Members */}
           <div className="flex justify-between items-center mt-4">
             <div className="flex -space-x-2">
-              {team.members.slice(0, 3).map((member, idx) => (
-                <Avatar key={idx} name={member.fullName} />
-              ))}
+              {team.members
+                .slice(0, 3)
+                .map((member: { fullName: string }, idx: number) => (
+                  <Avatar key={idx} name={member.fullName} />
+                ))}
               {team.members.length > 3 && (
                 <div className="w-8 h-8 rounded-full bg-gray-400 text-white flex items-center justify-center text-sm font-medium border-2 border-white">
                   +{team.members.length - 3}
@@ -176,6 +215,27 @@ export const TeamsList = ({
           Add a new team to organize members
         </p>
       </div>
+      {showEditModal && (
+        <EditTeamModal
+          teamId={selectedTeamId}
+          onClose={() => setShowEditModal(false)}
+          onUpdated={(updatedTeam: TeamResponse) => {
+            onUpdateTeam?.(updatedTeam);
+            setShowEditModal(false);
+          }}
+        />
+      )}
+      {showManageMemberModal && (
+        <ManageMembersModal
+          teamId={selectedTeamId}
+          onClose={() => setShowManageMemberModal(false)}
+          allUsers={members}
+          onUpdated={(updatedTeam: TeamResponse) => {
+            onUpdateTeam?.(updatedTeam);
+            setShowEditModal(false);
+          }}
+        />
+      )}
     </div>
   );
 };
