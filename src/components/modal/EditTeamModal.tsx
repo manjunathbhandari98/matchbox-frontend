@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import colors from '../../constants/colors';
