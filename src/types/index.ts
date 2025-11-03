@@ -122,6 +122,7 @@ export interface MemberRequest {
 export interface TeamResponse {
   id: string;
   name: string;
+  slug:string;
   description: string;
   avatar: string;
   createdBy: string;
@@ -149,3 +150,80 @@ export interface NotificationType {
   isRead?: boolean;
   invitationId?: string;
 }
+
+export interface ProjectRequest {
+  name: string;
+  description: string;
+  creatorId: string;
+  teamId: string;
+  collaboratorIds: string[];
+  status: string;
+  priority: string;
+  visibility: string;
+  startDate: string | null;
+  dueDate: string | null;
+}
+
+export interface TaskRequest {
+  title: string;
+  description?: string;
+  status?: "TODO" | "IN_PROGRESS" | "COMPLETED";
+  priority?: "LOW" | "MEDIUM" | "HIGH";
+  startDate?: string; 
+  dueDate?: string;
+  progress?: number;
+  projectId: string;
+  assignedToId?: string[];
+  createdById: string;
+  teamId?: string;
+  parentTaskId?: string | null;
+  tags?: string[];
+  subtaskIds?: string[];
+}
+
+export interface SubtaskResponse {
+  id: string;
+  title: string;
+  status: "TODO" | "IN_PROGRESS" | "COMPLETED";
+  progress: number;
+}
+
+export interface TaskAttachmentResponse {
+  id: string;
+  fileName: string;
+  url: string;
+  uploadedAt: string;
+}
+
+export interface TaskCommentResponse {
+  id: string;
+  message: string;
+  authorId: string;
+  createdAt: string;
+}
+
+
+export interface TaskResponse {
+  id: string;
+  title: string;
+  description?: string;
+  status: "TODO" | "IN_PROGRESS" | "COMPLETED";
+  priority: "LOW" | "MEDIUM" | "HIGH";
+  startDate?: string;
+  dueDate?: string;
+  completedAt?: string;
+  progress: number;
+  projectId?: string;
+  assignedToId?: string;
+  createdById?: string;
+  teamId?: string;
+  parentTaskId?: string;
+  tags: string[];
+  subtasks: SubtaskResponse[];
+  attachments: TaskAttachmentResponse[];
+  comments: TaskCommentResponse[];
+  createdAt: string;
+  updatedAt: string;
+  archived: boolean;
+}
+

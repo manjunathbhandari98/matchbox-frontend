@@ -6,6 +6,7 @@ import { AddProject } from './pages/AddProject';
 import { Analytics } from './pages/Analytics';
 import { AppLayout } from './pages/AppLayout';
 import AuthPage from './pages/AuthPage';
+import { CreateTask } from './pages/CreateTask';
 import CreateTeamPage from './pages/CreateTeamPage';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
@@ -91,6 +92,7 @@ function App() {
         <Route path="/invite-member" element={<InviteMemberPage />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/create-team" element={<CreateTeamPage />} />
+        <Route path="/create-task" element={<CreateTask />} />
       </Route>
     </Routes>
   );
