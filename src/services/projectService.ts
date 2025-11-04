@@ -34,6 +34,21 @@ export const getProjectsByTeam = async(teamId: string) =>{
     }
 }
 
+export const getProjectBySlug = async (slug: string) =>{
+  const token = localStorage.getItem('token');
+  try {
+    const res = await axios.get(`${BASE_URL}/project/${slug}`,{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    })
+    return res.data;
+  } catch (error:any) {
+        console.error("Error fetching projects:", error?.response?.data || error.message);
+    throw error;
+  }
+}
+
 export const createProject = async (data: ProjectRequest) => {
   const token = localStorage.getItem('token');
   try {

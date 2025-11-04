@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Users } from 'lucide-react';
+import { MoveLeft, Users } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
@@ -142,9 +142,21 @@ export const CreateTask = () => {
 
   return (
     <div className="p-6 w-full bg-white dark:bg-zinc-900 rounded-2xl shadow-xl">
-      <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">
-        Create Task
-      </h2>
+      <div className="flex w-full justify-between items-center">
+        <button
+          onClick={() => navigate(-1)}
+          type="button"
+          className="flex items-center gap-2 px-4 py-2 my-4 bg-gray-100 hover:bg-gray-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-xl transition-colors shadow-sm"
+        >
+          <MoveLeft className="text-gray-700 dark:text-gray-300" size={20} />
+          <span className="text-gray-800 dark:text-gray-200 font-medium">
+            Go Back
+          </span>
+        </button>
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">
+          Create Task
+        </h2>
+      </div>
       <form className="space-y-5" onSubmit={handleSubmit}>
         {/* Title */}
         <div>
@@ -258,6 +270,9 @@ export const CreateTask = () => {
               <option value="TODO">To Do</option>
               <option value="IN_PROGRESS">In Progress</option>
               <option value="COMPLETED">Completed</option>
+              <option value="REVIEW">Review</option>
+              <option value="BLOCKED">Blocked</option>
+              {/*  TODO, IN_PROGRESS, REVIEW, COMPLETED, BLOCKED */}
             </select>
           </div>
 

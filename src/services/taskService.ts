@@ -35,6 +35,21 @@ export const getAllTasksFromMyProjects = async(userId:string) =>{
     }
 }
 
+export const getTaskByProjects = async(projectId:string) =>{
+    const token = localStorage.getItem('token');
+    try {
+        const res = await axios.get(`${BASE_URL}/task/project/${projectId}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        return res.data;
+    }catch (error:any) {
+        console.error("Error fetching all tasks:", error?.response?.data || error.message);
+    throw error; 
+    }
+}
+
 export const createTask = async(taskData:TaskRequest) =>{
     const token = localStorage.getItem('token');
     try {

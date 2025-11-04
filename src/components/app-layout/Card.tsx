@@ -1,6 +1,6 @@
 interface CardProps {
   header: string;
-  count: number | string;
+  count: number | string | undefined;
   info?: string;
   change?: string; // e.g., "+24 from last month" or "-0.5 days"
   unit?: string; // e.g., "%", "days"

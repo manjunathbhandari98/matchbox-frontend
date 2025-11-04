@@ -1,9 +1,10 @@
 import { ArrowRight } from 'lucide-react';
 import React from 'react';
-import type { Project } from '../../types';
+import { Link } from 'react-router-dom';
+import type { ProjectResponse } from '../../types';
 
 interface ProjectListProps {
-  projects: Project[];
+  projects: ProjectResponse[];
   title?: string;
   className?: string;
   layout?: 'list' | 'grid';
@@ -117,9 +118,9 @@ const ProjectList: React.FC<ProjectListProps> = ({
               {/* Task Info */}
               <div className="flex justify-between items-center text-sm text-gray-700 dark:text-gray-300">
                 <div className="flex gap-1 items-center">
-                  <span>{project.completedTasks}</span>
-                  <span>/</span>
                   <span>{project.totalTasks}</span>
+                  <span>/</span>
+                  <span>{project.completedTasks}</span>
                 </div>
                 <span>{project.progress}%</span>
               </div>
@@ -133,7 +134,8 @@ const ProjectList: React.FC<ProjectListProps> = ({
               </div>
 
               {/* View Button */}
-              <div
+              <Link
+                to={`view-project/${project.slug}`}
                 className="group flex items-center gap-2 px-4 py-2 mt-2 bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 
              justify-center font-medium rounded-xl shadow-sm cursor-pointer 
              transition-all duration-300 text-gray-700 dark:text-gray-200
@@ -146,7 +148,7 @@ const ProjectList: React.FC<ProjectListProps> = ({
                   className="transition-transform duration-300 group-hover:translate-x-1"
                   size={18}
                 />
-              </div>
+              </Link>
             </div>
           );
         })}

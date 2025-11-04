@@ -214,7 +214,8 @@ export interface TaskResponse {
   completedAt?: string;
   progress: number;
   projectId?: string;
-  assignedToId?: string;
+  projectName?:string;
+  assignedTo?: [];
   createdById?: string;
   teamId?: string;
   parentTaskId?: string;
@@ -227,3 +228,42 @@ export interface TaskResponse {
   archived: boolean;
 }
 
+
+export interface CollaboratorResponse {
+  id: string;
+  fullName: string;
+  avatar?: string;
+  role?: string;
+}
+
+export interface ProjectResponse {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  creatorId: string;
+  teamId: string;
+  collaborators: CollaboratorResponse[];
+  status: string;
+  priority: string;
+  visibility: string;
+  startDate: string;
+  dueDate: string;
+  completedDate?: string;
+  progress: number;
+  totalTasks: number;
+  assignedTasks: number;
+  completedTasks: number;
+  overdueTasks: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DeadlineResponse {
+  id:string;
+  title:string;
+  type:string;
+  dueDate:string;
+  name:string;
+  completed:boolean;
+}

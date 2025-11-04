@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import type { RootState } from '../app/store';
+import { Avatar } from '../components/ui/Avatar';
 import CommonButton from '../components/ui/CommonButton';
 import { PageTitle } from '../components/ui/PageTitle';
 import colors from '../constants/colors';
 import { getAllTasksFromMyProjects, getMyTasks } from '../services/taskService';
-import type { TaskResponse } from '../types';
+import type { CollaboratorResponse, TaskResponse } from '../types';
 
 export const Tasks = () => {
   const currentUser = useSelector((state: RootState) => state.auth.user);
@@ -60,8 +61,9 @@ export const Tasks = () => {
     'all',
     'in-progress',
     'completed',
-    'pending',
-    'upcoming',
+    'todo',
+    'review',
+    'blocked',
   ];
 
   return (
@@ -149,9 +151,43 @@ export const Tasks = () => {
                   <p className="text-sm text-gray-500 dark:text-gray-200">
                     {task.description}
                   </p>
-                  <p className="text-xs text-gray-400 dark:text-gray-200">
-                    Project: {task.projectId} | Due: {task.dueDate}
+                  <p className="text-xs text-gray-400 dark:text-gray-200 flex items-center gap-2">
+                    <span className="font-medium text-gray-600 dark:text-gray-300">
+                      {task.projectName || 'Unknown Project'}
+                    </span>
+                    <span>•</span>
+                    <span>Due: {task.dueDate}</span>
                   </p>
+                  <div className="flex items-center mt-2">
+                    {task.assignedTo?.length ? (
+                      <div className="flex -space-x-2">
+                        {task.assignedTo
+                          .slice(0, 3)
+                          .map((member: CollaboratorResponse) =>
+                            member.avatar ? (
+                              <img
+                                key={member.id}
+                                src={member.avatar || '/default-avatar.png'}
+                                alt={member.fullName}
+                                className="w-8 h-8 rounded-full border-2 border-white dark:border-zinc-800"
+                                title={member.fullName}
+                              />
+                            ) : (
+                              <Avatar key={member.id} name={member.fullName} />
+                            )
+                          )}
+                        {task.assignedTo.length > 3 && (
+                          <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-300 dark:bg-zinc-700 text-xs font-medium text-gray-800 dark:text-gray-100 border-2 border-white dark:border-zinc-800">
+                            +{task.assignedTo.length - 3}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-xs text-gray-500 dark:text-gray-400 italic">
+                        Unassigned
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
               <div className="flex justify-between items-center mt-2">

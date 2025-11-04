@@ -16,6 +16,7 @@ import { ProfileSettings } from './pages/ProfileSettings';
 import { Projects } from './pages/Projects';
 import { Tasks } from './pages/Tasks';
 import { Teams } from './pages/Teams';
+import { ViewProjectPage } from './pages/ViewProject';
 import { setUserInfo } from './redux/authSlice';
 import { initializeTheme } from './redux/themeSlice';
 import PrivateRoute from './routes/PrivateRoute';
@@ -26,10 +27,10 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
 
-  // ✅ Fetch user only if logged in (has email)
+  //  Fetch user only if logged in (has email)
   useEffect(() => {
     const fetchUser = async () => {
-      if (!user?.email) return; // <-- prevent API call if user not logged in
+      if (!user?.email) return;
 
       try {
         const data = await getUserInfo(user.email);
@@ -93,6 +94,10 @@ function App() {
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/create-team" element={<CreateTeamPage />} />
         <Route path="/create-task" element={<CreateTask />} />
+        <Route
+          path="/:context/view-project/:slug"
+          element={<ViewProjectPage />}
+        />
       </Route>
     </Routes>
   );
