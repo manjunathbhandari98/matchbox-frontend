@@ -206,6 +206,7 @@ export interface TaskCommentResponse {
 export interface TaskResponse {
   id: string;
   title: string;
+  slug:string;
   description?: string;
   status: "TODO" | "IN_PROGRESS" | "COMPLETED";
   priority: "LOW" | "MEDIUM" | "HIGH";
@@ -266,4 +267,57 @@ export interface DeadlineResponse {
   dueDate:string;
   name:string;
   completed:boolean;
+}
+
+// 📊 Analytics overview of user's activity
+export interface AnalyticsOverviewResponse {
+  totalTasks: number;
+  completedTasks: number;
+  completionRate: number;
+  avgTimePerTask: number;
+  activeMembers: number;
+  taskChangeSinceLastMonth: number;
+  timeImprovement: number;
+}
+
+// 👥 Team performance metrics
+export interface TeamPerformanceResponse {
+  memberId: string;
+  fullName: string;
+  avatar?: string;
+  tasksCompleted: number;
+  tasksAssigned: number;
+  efficiency: number;
+}
+
+// 🧩 Project progress and delivery stats
+export interface ProjectProgressResponse {
+  projectId: string;
+  projectName: string;
+  completion: number; // percentage
+  onTimeRate: number; // percentage
+}
+
+// 📅 Weekly summary of user activity
+export interface WeeklySummaryResponse {
+  tasksCompleted: number;
+  newTasks: number;
+  overdueTasks: number;
+}
+
+// 🏅 Top performer in user’s teams
+export interface TopPerformerResponse {
+  memberId: string;
+  fullName: string;
+  avatar?: string;
+  efficiency: number;
+  tasksCompletedThisWeek: number;
+}
+
+// ❤️ Overall health and satisfaction indicators
+export interface OverallHealthResponse {
+  grade: string;
+  onTimeDelivery: number;
+  teamSatisfaction: number;
+  comment: string;
 }

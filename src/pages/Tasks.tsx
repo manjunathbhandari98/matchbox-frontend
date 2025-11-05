@@ -1,4 +1,4 @@
-import { Funnel, Plus, Search } from 'lucide-react';
+import { ChevronRight, Funnel, Plus, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -188,6 +188,12 @@ export const Tasks = () => {
                       </span>
                     )}
                   </div>
+                </div>
+                <div
+                  onClick={() => navigate(`/view-task/${task.slug}`)}
+                  className="dark:text-gray-200 text-zinc-800 cursor-pointer"
+                >
+                  <ChevronRight />
                 </div>
               </div>
               <div className="flex justify-between items-center mt-2">

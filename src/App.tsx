@@ -17,6 +17,7 @@ import { Projects } from './pages/Projects';
 import { Tasks } from './pages/Tasks';
 import { Teams } from './pages/Teams';
 import { ViewProjectPage } from './pages/ViewProject';
+import { ViewTask } from './pages/ViewTask';
 import { setUserInfo } from './redux/authSlice';
 import { initializeTheme } from './redux/themeSlice';
 import PrivateRoute from './routes/PrivateRoute';
@@ -98,6 +99,7 @@ function App() {
           path="/:context/view-project/:slug"
           element={<ViewProjectPage />}
         />
+        <Route path="/view-task/:slug" element={<ViewTask />} />
       </Route>
     </Routes>
   );
