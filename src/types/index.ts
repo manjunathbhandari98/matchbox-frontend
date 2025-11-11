@@ -86,7 +86,7 @@ export interface Member {
 export interface ActiveProject {
   projectId: string;
   projectName: string;
-  status: 'in-progress' | 'completed' | 'pending' | 'upcoming';
+  status: 'IN-PROGRESS' | 'COMPLETED' | 'PENDING' | 'UPCOMING';
   progress: number; // 0–100
 }
 
