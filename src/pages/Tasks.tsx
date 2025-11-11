@@ -1,4 +1,4 @@
-import { ChevronRight, Funnel, Plus, Search } from 'lucide-react';
+import { ChevronRight, Plus, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -104,16 +104,16 @@ export const Tasks = () => {
           <Search size={20} className="text-gray-500" />
           <input
             type="text"
-            className="w-full px-3 py-1 bg-transparent border-0 outline-0 text-gray-700 placeholder-gray-400"
+            className="w-full px-3 py-1 bg-transparent border-0 outline-0 dark:text-gray-200 text-gray-700 placeholder-gray-400"
             placeholder="Search tasks..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <button className="flex items-center gap-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2.5 text-gray-700 dark:text-gray-200 font-medium shadow-sm hover:shadow-md hover:bg-gray-50 dark:hover:bg-zinc-900 transition-all duration-200">
+        {/* <button className="flex items-center gap-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2.5 text-gray-700 dark:text-gray-200 font-medium shadow-sm hover:shadow-md hover:bg-gray-50 dark:hover:bg-zinc-900 transition-all duration-200">
           <Funnel size={18} className="text-gray-500" />
           <span>Filter</span>
-        </button>
+        </button> */}
       </div>
 
       {/* Status Selector */}
