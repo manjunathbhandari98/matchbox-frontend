@@ -9,7 +9,7 @@ import CommonButton from '../components/ui/CommonButton';
 import { PageTitle } from '../components/ui/PageTitle';
 import colors from '../constants/colors';
 import { getProjects } from '../services/projectService';
-import type { Project } from '../types';
+import type { ProjectResponse } from '../types';
 
 export const Projects = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -17,7 +17,7 @@ export const Projects = () => {
 
   const [activeTab, setActiveTab] = useState('In Progress');
   const [gridView, setGridView] = useState(true);
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<ProjectResponse[]>([]);
 
   useEffect(() => {
     const fetchProjects = async () => {
